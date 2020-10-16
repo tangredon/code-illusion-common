@@ -1,0 +1,78 @@
+version: 0.0.{build}
+skip_tags: true
+branches:
+  only:
+    - release/mainline
+    - development
+    - /release\/.+/
+image:
+- Visual Studio 2019
+environment:
+  APPVEYOR_YML_DISABLE_PS_LINUX: true
+  access_token:
+    secure: bgpjXvIfg4d/v1n+ngNN6ssEXpd2CV/viaR/i5fZiiMuYq8rZqumWCvvu9U9BdOV
+configuration: Release
+platform: Any CPU
+install:
+- choco install gitversion.portable -pre -y
+- ps: Install-Product node Current
+build:
+  verbosity: minimal
+before_build:
+- ps: gitversion /l console /output buildserver /updateAssemblyInfo
+build_script:
+- ps: .\build.ps1 --target=Windows
+test: off
+on_success:
+- ps: if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) { .\tag.ps1 }
+deploy:
+- provider: Octopus
+  push_packages: true
+  create_release: true
+  release_number: $(GitVersion_FullSemVer)
+  deploy_release: true
+  release_channel: Release
+  environment: Staging
+  server: https://illusion.octopus.app
+  api_key:
+    secure: YMM74WgiaR9yU/iIgYouIGdPAVCkZ7H7z6yJjmYKOfY=
+  project: illusion
+  deploy_wait: true
+  on:
+    branch: 
+      - /release\/.+/
+- provider: Octopus
+  push_packages: true
+  create_release: true
+  release_number: $(GitVersion_FullSemVer)
+  release_channel: Development
+  deploy_release: true
+  environment: Development
+  server: https://illusion.octopus.app
+  api_key:
+    secure: YMM74WgiaR9yU/iIgYouIGdPAVCkZ7H7z6yJjmYKOfY=
+  project: illusion
+  deploy_wait: true
+  on:
+    branch: 
+      - development
+# deploy:
+# - provider: S3
+#   access_key_id:
+#     secure: P6BMjRcwvm+p5oZwoadDWqPrx6DjVxktmzAqjz17LrE=
+#   secret_access_key:
+#     secure: RiLksbE2TYsVPvQVtBa2/ccEcFLqxZXX7P8um7MkwhUgDrfJt8lj5zo87CfnhlUi
+#   region: eu-central-1
+#   bucket: illusion.deploys
+#   folder: appveyor
+#   on:
+#     branch: /release\/.+/
+#   artifact: /.*/
+notifications:
+- provider: Slack
+  incoming_webhook:
+    secure: htrSyOk4MXa2SEcv3h7adfJ4y1lNavFox9GFZt8Y+JbrlFkOd6CvcXwu9mAsCQcLpgaHT8SrBqUS+2rEFfpLv1g6i+RxyDOZijq4aTaD5fU=
+  channel: app-veyor
+  on_build_success: false
+  on_build_failure: false
+  on_build_status_changed: true
