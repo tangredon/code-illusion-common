@@ -15,7 +15,6 @@ configuration: Release
 platform: Any CPU
 install:
 - choco install gitversion.portable -pre -y
-- ps: Install-Product node Current
 build:
   verbosity: minimal
 before_build:

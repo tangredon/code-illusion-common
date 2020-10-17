@@ -14,4 +14,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="HotChocolate" Version="10.5.3" />
+  </ItemGroup>
+
 </Project>

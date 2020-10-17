@@ -1,6 +1,6 @@
 ﻿using HotChocolate;
 
-namespace Illusion.Service.Storage.GraphQL.Helpers
+namespace Illusion.Common.GraphQL
 {
     public class GraphQLErrorFilter : IErrorFilter
     {
