@@ -131,6 +131,7 @@ Task("Windows")
 	.IsDependentOn("Clean")
 	.IsDependentOn("Build")
 	.IsDependentOn("Pack")
+	.IsDependentOn("Push")
     .IsDependentOn("Appveyor-Artifacts")
     .Does(() => {
         Information("Windows Completed");
