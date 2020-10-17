@@ -14,7 +14,7 @@ environment:
   PRIVATE_FEED_USERNAME:
     secure: fPwiWP/d3K8GFL6pwRydkUZiILhT8xvgQPlJsLa0Mvw=
   PRIVATE_FEED_PASSWORD:
-    secure: Eugtiytk84T5YzuBxcTxJA==
+    secure: XcY76bgmAreXfL3BlYc4FouQYEFIx2NkizyyILCiUlo=
 configuration: Release
 platform: Any CPU
 install:

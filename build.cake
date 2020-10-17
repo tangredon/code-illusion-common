@@ -87,15 +87,14 @@ Task("Pack")
 Task("Push")
     .IsDependentOn("Pack")
     .Does(() => {
-        var nugetSourceSettings = new NuGetSourcesSettings
-        {
-            UserName = EnvironmentVariable("PRIVATE_FEED_USERNAME"),
-            Password = EnvironmentVariable("PRIVATE_FEED_PASSWORD"),
-            IsSensitiveSource = true,
-            Verbosity = NuGetVerbosity.Detailed
-        };
+        // Get the paths to the packages.
+        var packages = GetFiles(workingDir + $"/{artifactsDirName}/*.nupkg");
 
-        NuGetAddSource("ArtifactoryV3", "https://tangredon.jfrog.io/artifactory/api/nuget/v3/illusion", nugetSourceSettings);
+        // Push the package.
+        NuGetPush(packages, new NuGetPushSettings {
+            Source = "https://tangredon.jfrog.io/artifactory/api/nuget/v3/illusion",
+            ApiKey = $"{EnvironmentVariable("PRIVATE_FEED_USERNAME")}:{EnvironmentVariable("PRIVATE_FEED_PASSWORD")}"
+        });
     });
 
 Task("Appveyor-Artifacts")
