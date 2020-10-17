@@ -21,7 +21,7 @@ branches:
     increment: None
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    regex: ^mainline$
+    regex: ^release\/mainline$
     source-branches:
     - develop
     tracks-release-branches: true
