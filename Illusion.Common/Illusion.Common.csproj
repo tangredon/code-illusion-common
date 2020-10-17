@@ -6,7 +6,6 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Illusion</Authors>
     <Company>Illusion</Company>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
