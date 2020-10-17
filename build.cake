@@ -56,6 +56,7 @@ Task("Build")
         
         var buildSettings = new MSBuildSettings()
             .SetConfiguration(configuration)
+            .SetPlatformTarget(PlatformTarget.MSIL)
             .SetVerbosity(Verbosity.Minimal)
             .UseToolVersion(MSBuildToolVersion.VS2019);
         MSBuild(solutionFile, buildSettings);
@@ -71,7 +72,8 @@ Task("Pack")
             IncludeReferencedProjects = true,
             Properties = new Dictionary<string, string>
             {
-                { "Configuration", "Release" }
+                { "Configuration", "Release" },
+                { "Platform", "AnyCPU" }
             },
             // Version = "1.2.5",
             // Authors                 = new[] {"Illusion"},
