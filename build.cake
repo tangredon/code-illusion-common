@@ -77,7 +77,6 @@ Task("Pack")
             },
             Version = version,
             Symbols                 = false,
-            NoPackageAnalysis       = true,
             BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1",
         };
 
