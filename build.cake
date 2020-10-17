@@ -86,7 +86,7 @@ Task("Pack")
 
 Task("Appveyor-Artifacts")
     .WithCriteria(string.IsNullOrEmpty(pr))
-    .IsDependentOn("Clean")
+    .IsDependentOn("Pack")
     .Does(() =>
     {
         if (AppVeyor.IsRunningOnAppVeyor)
@@ -103,6 +103,8 @@ Task("Appveyor-Artifacts")
     });
 
 Task("Windows")
+	.IsDependentOn("Info")
+	.IsDependentOn("Clean")
 	.IsDependentOn("Build")
 	.IsDependentOn("Pack")
     .IsDependentOn("Appveyor-Artifacts")
