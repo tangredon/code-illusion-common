@@ -75,10 +75,7 @@ Task("Pack")
                 { "Configuration", "Release" },
                 { "Platform", "AnyCPU" }
             },
-            // Version = "1.2.5",
-            // Authors                 = new[] {"Illusion"},
-            // Owners                  = new[] {"Contoso"},
-            // Description             = "The description of the package",
+            Version = version,
             Symbols                 = false,
             NoPackageAnalysis       = true,
             BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1",
@@ -104,19 +101,6 @@ Task("Appveyor-Artifacts")
             Information(@"Skipping artifact push as not running in AppVeyor Windows Environment");
         }
     });
-
-private void DotNetCorePublish(string projectPath, string framework, string runtime, string outputPath)
-{
-    var settings = new DotNetCorePublishSettings
-    {
-        Framework = framework,
-        Runtime = runtime,
-        OutputDirectory = outputPath,
-        ArgumentCustomization = args => args.Append("/p:PublishSingleFile=false")
-    };
-    DotNetCorePublish(projectPath, settings);
-
-}
 
 Task("Windows")
 	.IsDependentOn("Build")

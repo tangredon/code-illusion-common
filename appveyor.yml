@@ -22,8 +22,6 @@ before_build:
 build_script:
 - ps: .\build.ps1 --target=Windows
 test: off
-on_success:
-- ps: if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) { .\tag.ps1 }
 notifications:
 - provider: Slack
   incoming_webhook:
