@@ -11,6 +11,10 @@ environment:
   APPVEYOR_YML_DISABLE_PS_LINUX: true
   access_token:
     secure: bgpjXvIfg4d/v1n+ngNN6ssEXpd2CV/viaR/i5fZiiMuYq8rZqumWCvvu9U9BdOV
+  PRIVATE_FEED_USERNAME:
+    secure: fPwiWP/d3K8GFL6pwRydkUZiILhT8xvgQPlJsLa0Mvw=
+  PRIVATE_FEED_PASSWORD:
+    secure: Eugtiytk84T5YzuBxcTxJA==
 configuration: Release
 platform: Any CPU
 install:

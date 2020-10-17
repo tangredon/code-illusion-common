@@ -84,6 +84,30 @@ Task("Pack")
         NuGetPack(projectFile, nuGetPackSettings);
     });
 
+Task("Push")
+    .IsDependentOn("Pack")
+    .Does(() => {
+        var nugetSourceSettings = new NuGetSourcesSettings
+                             {
+                                 UserName = EnvironmentVariable("PRIVATE_FEED_USERNAME"),
+                                 Password = EnvironmentVariable("PRIVATE_FEED_PASSWORD"),
+                                 IsSensitiveSource = true,
+                                 Verbosity = NuGetVerbosity.Detailed
+                             };
+
+        var feed = new
+                    {
+                        Name = "ArtifactoryV3",
+                        Source = "https://tangredon.jfrog.io/artifactory/api/nuget/v3/illusion"
+                    };
+
+        NuGetAddSource(
+            name: feed.Name,
+            source: feed.Source,
+            settings: nugetSourceSettings
+        );
+    });
+
 Task("Appveyor-Artifacts")
     .WithCriteria(string.IsNullOrEmpty(pr))
     .IsDependentOn("Pack")
