@@ -2,7 +2,7 @@ version: 0.0.{build}
 skip_tags: true
 branches:
   only:
-    - release/mainline
+    - mainline
     - development
     - /release\/.+/
 image:
@@ -25,49 +25,6 @@ build_script:
 test: off
 on_success:
 - ps: if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) { .\tag.ps1 }
-deploy:
-- provider: Octopus
-  push_packages: true
-  create_release: true
-  release_number: $(GitVersion_FullSemVer)
-  deploy_release: true
-  release_channel: Release
-  environment: Staging
-  server: https://illusion.octopus.app
-  api_key:
-    secure: YMM74WgiaR9yU/iIgYouIGdPAVCkZ7H7z6yJjmYKOfY=
-  project: illusion
-  deploy_wait: true
-  on:
-    branch: 
-      - /release\/.+/
-- provider: Octopus
-  push_packages: true
-  create_release: true
-  release_number: $(GitVersion_FullSemVer)
-  release_channel: Development
-  deploy_release: true
-  environment: Development
-  server: https://illusion.octopus.app
-  api_key:
-    secure: YMM74WgiaR9yU/iIgYouIGdPAVCkZ7H7z6yJjmYKOfY=
-  project: illusion
-  deploy_wait: true
-  on:
-    branch: 
-      - development
-# deploy:
-# - provider: S3
-#   access_key_id:
-#     secure: P6BMjRcwvm+p5oZwoadDWqPrx6DjVxktmzAqjz17LrE=
-#   secret_access_key:
-#     secure: RiLksbE2TYsVPvQVtBa2/ccEcFLqxZXX7P8um7MkwhUgDrfJt8lj5zo87CfnhlUi
-#   region: eu-central-1
-#   bucket: illusion.deploys
-#   folder: appveyor
-#   on:
-#     branch: /release\/.+/
-#   artifact: /.*/
 notifications:
 - provider: Slack
   incoming_webhook:
