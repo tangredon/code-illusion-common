@@ -1,4 +1,5 @@
 ﻿using HotChocolate;
+using Illusion.Common.Helpers;
 
 namespace Illusion.Common.GraphQL
 {

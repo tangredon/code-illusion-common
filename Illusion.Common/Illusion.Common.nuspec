@@ -10,5 +10,9 @@
     <description>The description of the package</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>$copyright$</copyright>
+    <icon>images\logo.png</icon>
   </metadata>
+  <files>
+    <file src="..\Assets\logo.png" target="images\" />
+  </files>
 </package>

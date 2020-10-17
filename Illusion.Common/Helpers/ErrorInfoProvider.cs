@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 
-namespace Illusion.Common.GraphQL
+namespace Illusion.Common.Helpers
 {
     /// <summary>
     /// Credit to GraphQL.NET

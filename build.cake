@@ -77,7 +77,8 @@ Task("Pack")
             },
             Version = version,
             Symbols                 = false,
-            BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1",
+            // BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1"
+            WorkingDirectory = workingDir
         };
 
         NuGetPack(projectFile, nuGetPackSettings);
