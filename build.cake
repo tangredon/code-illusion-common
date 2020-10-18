@@ -64,6 +64,7 @@ Task("Build")
     });
 
 Task("Push")
+    .WithCriteria(string.IsNullOrEmpty(pr))
     .IsDependentOn("Build")
     .Does(() => {
         // Get the paths to the packages.
