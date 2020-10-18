@@ -104,7 +104,7 @@ Task("Appveyor-Artifacts")
     {
         if (AppVeyor.IsRunningOnAppVeyor)
         {
-            foreach (var file in GetFiles(workingDir + $"/{artifactsDirName}/*"))
+            foreach (var file in GetFiles(workingDir + $"/**/Release/*.nupkg"))
             {
                 AppVeyor.UploadArtifact(file.FullPath);
             }

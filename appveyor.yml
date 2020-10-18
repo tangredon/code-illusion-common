@@ -22,7 +22,7 @@ install:
 build:
   verbosity: minimal
 before_build:
-- ps: gitversion /l console /output buildserver /updateAssemblyInfo
+- ps: gitversion /l console /output buildserver /updateAssemblyInfo /updateProjectFiles
 build_script:
 - ps: .\build.ps1 --target=Windows
 test: off
