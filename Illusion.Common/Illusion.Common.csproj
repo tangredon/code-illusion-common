@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Illusion</Authors>
     <Company>Illusion</Company>
+    <NuspecFile>Illusion.Common.nuspec</NuspecFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
