@@ -25,6 +25,7 @@ namespace Illusion.Common.Consul
         public static IApplicationBuilder UseConsul(this IApplicationBuilder app, ConsulRegistrationSettings settings)
         {
             var consulClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
+
             var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("Consul:Extensions");
             var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
 
@@ -36,7 +37,8 @@ namespace Illusion.Common.Consul
             var uri = new Uri(address);
             var registration = new AgentServiceRegistration()
             {
-                Tags = new [] { "testTag" },
+                Meta = settings.Meta,
+                Tags = settings.Tags,
                 ID = settings.Id,
                 Name = settings.Name,
                 Address = $"{uri.Host}",
