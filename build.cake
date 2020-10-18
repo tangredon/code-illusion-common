@@ -58,37 +58,17 @@ Task("Build")
             .SetConfiguration(configuration)
             .SetPlatformTarget(PlatformTarget.MSIL)
             .SetVerbosity(Verbosity.Minimal)
-            .UseToolVersion(MSBuildToolVersion.VS2019);
+            .UseToolVersion(MSBuildToolVersion.VS2019)
+            .WithProperty("PackageVersion", new[] { version });
         MSBuild(solutionFile, buildSettings);
     });
 
-Task("Pack")
+Task("Push")
     .WithCriteria(string.IsNullOrEmpty(pr))
     .IsDependentOn("Build")
     .Does(() => {
-        var nuGetPackSettings = new NuGetPackSettings
-        {
-            OutputDirectory = artifactsDirectory,
-            IncludeReferencedProjects = true,
-            Properties = new Dictionary<string, string>
-            {
-                { "Configuration", "Release" },
-                { "Platform", "AnyCPU" }
-            },
-            Version = version,
-            Symbols                 = false,
-            // BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1"
-            WorkingDirectory = workingDir
-        };
-
-        NuGetPack(projectFile, nuGetPackSettings);
-    });
-
-Task("Push")
-    .IsDependentOn("Pack")
-    .Does(() => {
         // Get the paths to the packages.
-        var packages = GetFiles(workingDir + $"/{artifactsDirName}/*.nupkg");
+        var packages = GetFiles(workingDir + $"/**/Release/*.nupkg");
 
         // Push the package.
         NuGetPush(packages, new NuGetPushSettings {
@@ -99,12 +79,12 @@ Task("Push")
 
 Task("Appveyor-Artifacts")
     .WithCriteria(string.IsNullOrEmpty(pr))
-    .IsDependentOn("Pack")
+    .IsDependentOn("Build")
     .Does(() =>
     {
         if (AppVeyor.IsRunningOnAppVeyor)
         {
-            foreach (var file in GetFiles(workingDir + $"/{artifactsDirName}/*"))
+            foreach (var file in GetFiles(workingDir + $"/**/Release/*.nupkg"))
             {
                 AppVeyor.UploadArtifact(file.FullPath);
             }
@@ -119,7 +99,6 @@ Task("Windows")
 	.IsDependentOn("Info")
 	.IsDependentOn("Clean")
 	.IsDependentOn("Build")
-	.IsDependentOn("Pack")
 	.IsDependentOn("Push")
     .IsDependentOn("Appveyor-Artifacts")
     .Does(() => {
