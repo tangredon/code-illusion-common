@@ -7,6 +7,7 @@
     <Authors>Illusion</Authors>
     <Company>Illusion</Company>
     <NuspecFile>Illusion.Common.nuspec</NuspecFile>
+    <NuspecProperties>$(NuspecProperties);version=$(Version)</NuspecProperties>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
