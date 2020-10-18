@@ -62,33 +62,33 @@ Task("Build")
         MSBuild(solutionFile, buildSettings);
     });
 
-Task("Pack")
-    .WithCriteria(string.IsNullOrEmpty(pr))
-    .IsDependentOn("Build")
-    .Does(() => {
-        var nuGetPackSettings = new NuGetPackSettings
-        {
-            OutputDirectory = artifactsDirectory,
-            IncludeReferencedProjects = true,
-            Properties = new Dictionary<string, string>
-            {
-                { "Configuration", "Release" },
-                { "Platform", "AnyCPU" }
-            },
-            Version = version,
-            // BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1"
-            WorkingDirectory = workingDir,
-            ArgumentCustomization = args=>args.Append("-IncludeReferencedProjects"),
-        };
+// Task("Pack")
+//     .WithCriteria(string.IsNullOrEmpty(pr))
+//     .IsDependentOn("Build")
+//     .Does(() => {
+//         var nuGetPackSettings = new NuGetPackSettings
+//         {
+//             // OutputDirectory = artifactsDirectory,
+//             // IncludeReferencedProjects = true,
+//             Properties = new Dictionary<string, string>
+//             {
+//                 { "Configuration", "Release" },
+//                 { "Platform", "AnyCPU" }
+//             },
+//             // Version = version,
+//             // // BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1"
+//             // WorkingDirectory = workingDir,
+//             // ArgumentCustomization = args=>args.Append("-IncludeReferencedProjects"),
+//         };
 
-        NuGetPack(projectFile, nuGetPackSettings);
-    });
+//         NuGetPack(projectFile, nuGetPackSettings);
+//     });
 
 Task("Push")
-    .IsDependentOn("Pack")
+    .IsDependentOn("Build")
     .Does(() => {
         // Get the paths to the packages.
-        var packages = GetFiles(workingDir + $"/{artifactsDirName}/*.nupkg");
+        var packages = GetFiles(workingDir + $"/**/Release/*.nupkg");
 
         // Push the package.
         NuGetPush(packages, new NuGetPushSettings {
