@@ -12,6 +12,9 @@
     <copyright>$copyright$</copyright>
     <icon>images\logo.png</icon>
     <iconUrl>https://raw.githubusercontent.com/tangredon/code-illusion-common/development/Assets/logo.png</iconUrl>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1" />
+    </dependencies>
   </metadata>
   <files>
     <file src="..\Assets\logo.png" target="images\" />

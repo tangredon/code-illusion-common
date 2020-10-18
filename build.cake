@@ -76,9 +76,9 @@ Task("Pack")
                 { "Platform", "AnyCPU" }
             },
             Version = version,
-            Symbols                 = false,
             // BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1"
-            WorkingDirectory = workingDir
+            WorkingDirectory = workingDir,
+            ArgumentCustomization = args=>args.Append("-IncludeReferencedProjects"),
         };
 
         NuGetPack(projectFile, nuGetPackSettings);
