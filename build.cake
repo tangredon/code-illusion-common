@@ -99,7 +99,7 @@ Task("Push")
 
 Task("Appveyor-Artifacts")
     .WithCriteria(string.IsNullOrEmpty(pr))
-    .IsDependentOn("Pack")
+    .IsDependentOn("Build")
     .Does(() =>
     {
         if (AppVeyor.IsRunningOnAppVeyor)
