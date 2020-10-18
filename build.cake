@@ -58,31 +58,10 @@ Task("Build")
             .SetConfiguration(configuration)
             .SetPlatformTarget(PlatformTarget.MSIL)
             .SetVerbosity(Verbosity.Minimal)
-            .UseToolVersion(MSBuildToolVersion.VS2019);
+            .UseToolVersion(MSBuildToolVersion.VS2019)
+            .WithProperty("PackageVersion", new[] { version });
         MSBuild(solutionFile, buildSettings);
     });
-
-// Task("Pack")
-//     .WithCriteria(string.IsNullOrEmpty(pr))
-//     .IsDependentOn("Build")
-//     .Does(() => {
-//         var nuGetPackSettings = new NuGetPackSettings
-//         {
-//             // OutputDirectory = artifactsDirectory,
-//             // IncludeReferencedProjects = true,
-//             Properties = new Dictionary<string, string>
-//             {
-//                 { "Configuration", "Release" },
-//                 { "Platform", "AnyCPU" }
-//             },
-//             // Version = version,
-//             // // BasePath                = "./Illusion.Common/bin/Release/netcoreapp3.1"
-//             // WorkingDirectory = workingDir,
-//             // ArgumentCustomization = args=>args.Append("-IncludeReferencedProjects"),
-//         };
-
-//         NuGetPack(projectFile, nuGetPackSettings);
-//     });
 
 Task("Push")
     .IsDependentOn("Build")
