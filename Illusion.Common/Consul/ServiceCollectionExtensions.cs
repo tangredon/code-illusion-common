@@ -19,9 +19,7 @@ namespace Illusion.Common.Consul
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
 
             var settings = new ConsulSettings();
-            var consulSection = configuration.GetSection(ConsulSettings.SectionName);
-
-            consulSection.Bind(settings);
+            configuration.GetSection(ConsulSettings.SectionName).Bind(settings);
 
             services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
             {
@@ -29,7 +27,7 @@ namespace Illusion.Common.Consul
                 consulConfig.Address = new Uri(address);
             }));
 
-            services.Configure<ConsulRegistrationSettings>(consulSection);
+            services.Configure<ConsulRegistrationSettings>(configuration.GetSection(ConsulRegistrationSettings.SectionName));
 
             return services;
         }
