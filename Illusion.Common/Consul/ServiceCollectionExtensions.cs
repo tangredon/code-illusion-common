@@ -87,7 +87,7 @@ namespace Illusion.Common.Consul
                 Port = uri.Port
             };
 
-            logger.LogDebug("Registering {Registration}", registration);
+            logger.LogDebug("Register {@Registration}", registration);
             consulClient.Agent.ServiceDeregister(registration.ID).ConfigureAwait(true);
             consulClient.Agent.ServiceRegister(registration).ConfigureAwait(true);
 
