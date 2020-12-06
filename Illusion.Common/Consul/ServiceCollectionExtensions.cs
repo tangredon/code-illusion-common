@@ -51,13 +51,12 @@ namespace Illusion.Common.Consul
 
         public static IApplicationBuilder UseConsul(this IApplicationBuilder app)
         {
-            var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("Consul:Extensions");
+            var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("Illusion.Common.Consul");
 
             var consulSettings = app.ApplicationServices.GetService<IOptions<ConsulRegistrationSettings>>();
             if (consulSettings == null)
             {
-                logger.LogWarning("Could not resolve consul settings");
-                return app;
+                throw new InvalidOperationException("Could not resolve consul settings. Ensure \"AddConsul\" is added to \"ConfigureServices\".");
             }
 
             var settings = consulSettings.Value;
@@ -88,13 +87,13 @@ namespace Illusion.Common.Consul
                 Port = uri.Port
             };
 
-            logger.LogInformation($"Registering with Consul: {registration.Name}, {registration.ID}, {registration.Address}, {registration.Port}");
+            logger.LogDebug("Registering {Registration}", registration);
             consulClient.Agent.ServiceDeregister(registration.ID).ConfigureAwait(true);
             consulClient.Agent.ServiceRegister(registration).ConfigureAwait(true);
 
             lifetime.ApplicationStopping.Register(() =>
             {
-                logger.LogInformation("Unregistering from Consul");
+                logger.LogDebug($"Deregister {registration.ID} from Consul");
                 consulClient.Agent.ServiceDeregister(registration.ID).ConfigureAwait(true);
             });
 
