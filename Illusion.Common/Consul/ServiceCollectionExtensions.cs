@@ -16,50 +16,28 @@ namespace Illusion.Common.Consul
     {
         public static IServiceCollection AddConsul(this IServiceCollection services)
         {
-            var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+            using var serviceProvider = services.BuildServiceProvider();
+            var configuration = serviceProvider.GetService<IConfiguration>();
 
-            var settings = new ConsulSettings();
-            configuration.GetSection(ConsulSettings.SectionName).Bind(settings);
+            var settings = configuration.GetSection(ConsulSettings.SectionName).Get<ConsulSettings>();
 
             services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
             {
-                var address = settings.Host;
-                consulConfig.Address = new Uri(address);
+                consulConfig.Address = new Uri(settings.Host);
             }));
 
-            services.Configure<ConsulRegistrationSettings>(configuration.GetSection(ConsulRegistrationSettings.SectionName));
+            services.Configure<ConsulSettings>(configuration.GetSection(ConsulSettings.SectionName));
 
             return services;
         }
-
-        //private static ConsulRegistrationSettings BuildConsulSettings(IWebHostEnvironment env, IOptions<ConsulRegistrationSettings> consulOptions)
-        //{
-        //    var consul = consulOptions.Value;
-        //    consul.Id = $"{consul.Name}:{Guid.NewGuid()}";
-        //    consul.Meta = new Dictionary<string, string>()
-        //    {
-        //        {"Version", VersionInfo.Version}
-        //    };
-
-        //    if (env.IsDevelopment())
-        //    {
-        //        consul.Tags = new[] { "dev" };
-        //    }
-
-        //    return consul;
-        //}
 
         public static IApplicationBuilder UseConsul(this IApplicationBuilder app)
         {
             var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("Illusion.Common.Consul");
 
-            var consulSettings = app.ApplicationServices.GetService<IOptions<ConsulRegistrationSettings>>();
-            if (consulSettings == null)
-            {
-                throw new InvalidOperationException("Could not resolve consul settings. Ensure \"AddConsul\" is added to \"ConfigureServices\".");
-            }
+            var configuration = app.ApplicationServices.GetService<IConfiguration>();
 
-            var settings = consulSettings.Value;
+            var settings = configuration.GetSection(ConsulRegistrationSettings.SectionName).Get<ConsulRegistrationSettings>();
 
             settings.Id = $"{settings.Name}:{Guid.NewGuid()}";
             //settings.Meta = new Dictionary<string, string>()
@@ -68,22 +46,26 @@ namespace Illusion.Common.Consul
             //};
 
             var consulClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
-            
             var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
 
             if (!(app.Properties["server.Features"] is FeatureCollection features)) return app;
 
             var addresses = features.Get<IServerAddressesFeature>();
-            var address = addresses.Addresses.First();
+            var address = addresses.Addresses.FirstOrDefault();
 
-            var uri = new Uri(address);
+            if (!Uri.TryCreate(address, UriKind.RelativeOrAbsolute, out var uri))
+            {
+                // fallback
+                throw new Exception($"Invalid registration address {address}");
+            }
+
             var registration = new AgentServiceRegistration()
             {
                 Meta = settings.Meta,
                 Tags = settings.Tags,
                 ID = settings.Id,
                 Name = settings.Name,
-                Address = $"{uri.Host}",
+                Address = uri.Host,
                 Port = uri.Port
             };
 

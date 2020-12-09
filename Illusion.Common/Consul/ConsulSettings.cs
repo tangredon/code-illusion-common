@@ -2,7 +2,7 @@
 {
     public class ConsulSettings
     {
-        public static string SectionName => "Consul:Agent";
+        public static string SectionName = "Consul:Agent";
 
         /// <summary>
         /// e.g. http://localhost:8500
