@@ -13,6 +13,8 @@ namespace Illusion.Common.Authentication
     {
         public static IServiceCollection AddOpenIdConnectionAuthentication(this IServiceCollection services, OpenIdConnectSettings settings)
         {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
