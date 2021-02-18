@@ -72,8 +72,8 @@ Task("Push")
 
         // Push the package.
         NuGetPush(packages, new NuGetPushSettings {
-            Source = "https://tangredon.jfrog.io/artifactory/api/nuget/v3/illusion",
-            ApiKey = $"{EnvironmentVariable("PRIVATE_FEED_USERNAME")}:{EnvironmentVariable("PRIVATE_FEED_PASSWORD")}"
+            Source = $"{EnvironmentVariable("APPVEYOR_NUGET_SOURCE")}",
+            ApiKey = $"{EnvironmentVariable("APPVEYOR_API_KEY")}"
         });
     });
 
