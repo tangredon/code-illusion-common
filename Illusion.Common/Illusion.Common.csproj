@@ -15,11 +15,11 @@
   <ItemGroup>
     <PackageReference Include="Base62-Net" Version="1.2.157201" />
     <PackageReference Include="Consul" Version="1.6.1.1" />
-    <PackageReference Include="FluentValidation" Version="9.2.2" />
-    <PackageReference Include="HotChocolate" Version="10.5.3" />
+    <PackageReference Include="FluentValidation" Version="9.5.1" />
+    <PackageReference Include="HotChocolate" Version="11.0.9" />
     <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.9" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.9" />
