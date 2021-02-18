@@ -8,6 +8,7 @@ branches:
 image:
 - Visual Studio 2019
 environment:
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
   APPVEYOR_YML_DISABLE_PS_LINUX: true
   access_token:
     secure: bgpjXvIfg4d/v1n+ngNN6ssEXpd2CV/viaR/i5fZiiMuYq8rZqumWCvvu9U9BdOV
