@@ -67,14 +67,16 @@ Task("Push")
     .WithCriteria(string.IsNullOrEmpty(pr))
     .IsDependentOn("Build")
     .Does(() => {
-        // Get the paths to the packages.
-        var packages = GetFiles(workingDir + $"/**/Release/*.nupkg");
+        Information("Using built-in AppVeyor NuGet Feed. Push is disabled.");
 
-        // Push the package.
-        NuGetPush(packages, new NuGetPushSettings {
-            Source = "https://tangredon.jfrog.io/artifactory/api/nuget/v3/illusion",
-            ApiKey = $"{EnvironmentVariable("PRIVATE_FEED_USERNAME")}:{EnvironmentVariable("PRIVATE_FEED_PASSWORD")}"
-        });
+        // // Get the paths to the packages.
+        // var packages = GetFiles(workingDir + $"/**/Release/*.nupkg");
+
+        // // Push the package.
+        // NuGetPush(packages, new NuGetPushSettings {
+        //     Source = $"{EnvironmentVariable("APPVEYOR_NUGET_SOURCE")}",
+        //     ApiKey = $"{EnvironmentVariable("APPVEYOR_API_KEY")}"
+        // });
     });
 
 Task("Appveyor-Artifacts")

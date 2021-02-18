@@ -20,7 +20,7 @@ If (-not [string]::IsNullOrEmpty($pr)) {
 If ($branchName.StartsWith($tagBranch)) 
 {
     Write-Host "Tagging commit with $tag ...";
-    Invoke-Expression "& git remote add appveyor `"https://$($env:access_token):x-oauth-basic@github.com/tangredon/code-illusion.git`"";
+    Invoke-Expression "& git remote add appveyor `"https://$($env:access_token):x-oauth-basic@github.com/tangredon/code-illusion-common.git`"";
     Invoke-Expression "& git tag `"$tag`"";
     Invoke-Expression "& git push appveyor -q `"$tag`""
 }

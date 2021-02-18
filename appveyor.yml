@@ -8,9 +8,14 @@ branches:
 image:
 - Visual Studio 2019
 environment:
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
   APPVEYOR_YML_DISABLE_PS_LINUX: true
   access_token:
     secure: bgpjXvIfg4d/v1n+ngNN6ssEXpd2CV/viaR/i5fZiiMuYq8rZqumWCvvu9U9BdOV
+  APPVEYOR_API_KEY:
+    secure: rpXPHQWPOYenbPde1TBHi1GCd4ZQmZdvHvgDHAD63ls=
+  APPVEYOR_NUGET_SOURCE:
+    secure: VuWtCLy/4eydK+DVx9MO6TQr3YkXxpSrdWPKsCdIeTJwX5TwLG1AdFFvku5e/3BkvuLXWaWavRnZm57HBrG4oZSvKfpS5UzlrlxMRpvnicY=
   PRIVATE_FEED_USERNAME:
     secure: fPwiWP/d3K8GFL6pwRydkUZiILhT8xvgQPlJsLa0Mvw=
   PRIVATE_FEED_PASSWORD:
