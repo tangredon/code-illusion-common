@@ -1,4 +1,5 @@
 ﻿using Illusion.Common.Framework;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -20,7 +21,19 @@ namespace Illusion.Common.Filters
                     Message = exception.Message
                 };
 
-                context.Result = new BadRequestObjectResult(exceptionObject);
+                var details = new ProblemDetails
+                {
+                    Instance = context.HttpContext.Request.Path,
+                    Status = StatusCodes.Status400BadRequest,
+                    Title = "A problem occurred",
+                    Detail = exception.Message,
+                    Type = "erm ..."
+                };
+
+                context.Result = new BadRequestObjectResult(details)
+                {
+                    ContentTypes = {"application/problem+json"}
+                };
             }
         }
     }
