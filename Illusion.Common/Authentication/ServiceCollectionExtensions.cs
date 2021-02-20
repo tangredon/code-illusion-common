@@ -31,6 +31,10 @@ namespace Illusion.Common.Authentication
 
                     options.Events = new JwtBearerEvents
                     {
+                        OnMessageReceived = (context) =>
+                        {
+                            return Task.CompletedTask;
+                        },
                         OnTokenValidated = (context) =>
                         {
                             var identity = context.Principal?.Identity as ClaimsIdentity;
