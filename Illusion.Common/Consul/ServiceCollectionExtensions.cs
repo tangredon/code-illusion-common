@@ -67,13 +67,13 @@ namespace Illusion.Common.Consul
                 Name = settings.Name,
                 Address = uri.Host,
                 Port = uri.Port,
-                Check = new AgentCheckRegistration
-                {
-                    TCP = $"{uri.Host}:{uri.Port}",
-                    Timeout = TimeSpan.FromSeconds(2),
-                    Interval = TimeSpan.FromSeconds(10),
-                    DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5)
-                }
+                //Check = new AgentCheckRegistration
+                //{
+                //    TCP = $"{uri.Host}:{uri.Port}",
+                //    Timeout = TimeSpan.FromSeconds(2),
+                //    Interval = TimeSpan.FromSeconds(10),
+                //    DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5)
+                //}
             };
 
             logger.LogDebug("Register {@Registration}", registration);
