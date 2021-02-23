@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Illusion.Common.Framework.Events;
 
 namespace Illusion.Common.Framework
@@ -26,9 +27,18 @@ namespace Illusion.Common.Framework
 
         public void Load(IEnumerable<IEvent> history)
         {
-            foreach (var e in history)
+            foreach (var @event in history)
             {
-                When(e);
+                When(@event);
+                Version++;
+            }
+        }
+
+        public async Task Load(IAsyncEnumerable<IEvent> history)
+        {
+            await foreach (var @event in history)
+            {
+                When(@event);
                 Version++;
             }
         }
