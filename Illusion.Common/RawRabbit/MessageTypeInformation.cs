@@ -4,6 +4,10 @@ namespace Illusion.Common.RawRabbit
 {
     public class MessageTypeInformation
     {
+        public MessageTypeInformation()
+        {
+        }
+
         public MessageTypeInformation(Type type)
         {
             ClrType = type;
