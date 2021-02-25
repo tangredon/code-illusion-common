@@ -6,9 +6,13 @@ using Illusion.Common.Framework.Events;
 
 namespace Illusion.Common.Framework
 {
-    public abstract class AggregateRoot<TId>
+    public abstract class BaseAggregateRoot<TId>
     {
         public TId Id { get; protected set; }
+    }
+
+    public abstract class AggregateRoot : BaseAggregateRoot<Guid>
+    {
         public ulong Version { get; private set; } = ulong.MaxValue;
 
         protected abstract void When(IEvent @event);
