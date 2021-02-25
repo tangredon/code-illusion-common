@@ -1,4 +1,5 @@
 ﻿using System;
+using RawRabbit.Common;
 using RawRabbit.Enrichers.MessageContext.Context;
 
 namespace Illusion.Common.RawRabbit
@@ -9,6 +10,7 @@ namespace Illusion.Common.RawRabbit
         public string Source { get; set; }
         public Guid OwnerId { get; set; }
         public MessageTypeInformation TypeInfo { get; set; }
+        public RetryInformation RetryInfo { get; set; }
         public string RoutingKey { get; set; }
         public string SpanContext { get; set; }
     }
