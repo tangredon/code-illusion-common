@@ -6,6 +6,7 @@ namespace Illusion.Common.RawRabbit
     {
         public MessageTypeInformation()
         {
+            // Do not remove this; required during deserialization
         }
 
         public MessageTypeInformation(Type type)

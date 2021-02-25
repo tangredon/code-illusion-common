@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Illusion.Common.Framework.Events;
@@ -10,7 +11,10 @@ namespace Illusion.Common.Framework
         public TId Id { get; protected set; }
         public ulong Version { get; private set; } = ulong.MaxValue;
 
-        protected abstract void When(IEvent @event);
+        protected void When(IEvent @event)
+        {
+            throw new InvalidOperationException($"Could not handle event of type {@event.GetType().Name}");
+        }
 
         private readonly List<IEvent> _changes;
 
@@ -18,7 +22,7 @@ namespace Illusion.Common.Framework
 
         protected void Apply(IEvent @event)
         {
-            When(@event);
+            When((dynamic)@event);
             EnsureValidState();
             _changes.Add(@event);
         }
