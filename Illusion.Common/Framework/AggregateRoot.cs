@@ -11,10 +11,7 @@ namespace Illusion.Common.Framework
         public TId Id { get; protected set; }
         public ulong Version { get; private set; } = ulong.MaxValue;
 
-        protected void When(IEvent @event)
-        {
-            throw new InvalidOperationException($"Could not handle event of type {@event.GetType().Name}");
-        }
+        protected abstract void When(IEvent @event);
 
         private readonly List<IEvent> _changes;
 
@@ -22,7 +19,7 @@ namespace Illusion.Common.Framework
 
         protected void Apply(IEvent @event)
         {
-            When((dynamic)@event);
+            When(@event);
             EnsureValidState();
             _changes.Add(@event);
         }
