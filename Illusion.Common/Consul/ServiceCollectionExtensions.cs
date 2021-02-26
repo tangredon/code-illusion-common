@@ -39,7 +39,7 @@ namespace Illusion.Common.Consul
 
             var settings = configuration.GetSection(ConsulRegistrationSettings.SectionName).Get<ConsulRegistrationSettings>();
 
-            settings.Id = $"{settings.Name}:{Guid.NewGuid()}";
+            settings.Id = $"{settings.Name}:{configuration.GetValue<string>("COMPUTERNAME")}";
             //settings.Meta = new Dictionary<string, string>()
             //{
             //    {"Version", VersionInfo.Version}
