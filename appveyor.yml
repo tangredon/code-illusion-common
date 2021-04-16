@@ -20,6 +20,10 @@ environment:
     secure: fPwiWP/d3K8GFL6pwRydkUZiILhT8xvgQPlJsLa0Mvw=
   PRIVATE_FEED_PASSWORD:
     secure: XcY76bgmAreXfL3BlYc4FouQYEFIx2NkizyyILCiUlo=
+cache:
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml # Choco executables
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml # Choco packages
+  - '%USERPROFILE%.nuget\packages -> **.sln, **.csproj' # NuGet packages
 configuration: Release
 platform: Any CPU
 install:
