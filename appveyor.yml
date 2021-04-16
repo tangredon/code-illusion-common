@@ -34,6 +34,7 @@ before_build:
 - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 build_script:
 - ps: .\build.ps1 --target=Windows
+- ps: docker --version
 test: off
 on_success:
 - ps: if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) { .\tag.ps1 }
