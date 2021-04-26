@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Grpc.Core;
 using Jaeger;
+using Jaeger.Reporters;
 using Jaeger.Samplers;
-using Jaeger.Senders;
-using Jaeger.Senders.Thrift;
+using Jaeger.Senders.Grpc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenTracing;
@@ -18,31 +18,18 @@ namespace Illusion.Common.Tracing
             {
                 var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
-                var senderResolver = new SenderResolver(loggerFactory).RegisterSenderFactory<ThriftSenderFactory>();
-                Jaeger.Configuration.SenderConfiguration.DefaultSenderResolver = senderResolver;
-
-                var config = new Jaeger.Configuration(serviceName, loggerFactory);
-
-                var samplerConfig = new Configuration.SamplerConfiguration(loggerFactory);
-                samplerConfig
-                    .WithType("const")
-                    .WithParam(1);
-
-                var senderConfig = new Configuration.SenderConfiguration(loggerFactory);
-                senderConfig
-                    .WithAgentHost(hostname);
-
-                var reporterConfig = new Configuration.ReporterConfiguration(loggerFactory);
-                
-                reporterConfig
-                    .WithSender(senderConfig);
-
-                config
-                    .WithReporter(reporterConfig)
-                    .WithSampler(samplerConfig);
-
-                var tracer = config.GetTracerBuilder()
+                var sampler = new ConstSampler(sample: true);
+                var reporter = new RemoteReporter.Builder()
+                    .WithLoggerFactory(loggerFactory)
+                    .WithSender(new GrpcSender($"{hostname}:14250", ChannelCredentials.Insecure, 0))
                     .Build();
+
+                var tracer = new Tracer.Builder(serviceName)
+                    .WithLoggerFactory(loggerFactory)
+                    .WithSampler(sampler)
+                    .WithReporter(reporter)
+                    .Build();
+
 
                 GlobalTracer.Register(tracer);
                 return tracer;
