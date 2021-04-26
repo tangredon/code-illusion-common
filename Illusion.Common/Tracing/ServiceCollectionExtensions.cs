@@ -12,7 +12,7 @@ namespace Illusion.Common.Tracing
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCustomOpenTracing(this IServiceCollection services, string serviceName, string hostname)
+        public static IServiceCollection AddCustomOpenTracing(this IServiceCollection services, string serviceName, string hostname, bool http = false)
         {
             services.AddSingleton<ITracer>(serviceProvider =>
             {
@@ -29,8 +29,17 @@ namespace Illusion.Common.Tracing
                     .WithParam(1);
 
                 var senderConfig = new Configuration.SenderConfiguration(loggerFactory);
-                senderConfig
-                    .WithAgentHost(hostname);
+                if (http == false)
+                {
+                    senderConfig
+                        .WithAgentHost(hostname)
+                        .WithAgentPort(6831);
+                }
+                else
+                {
+                    senderConfig
+                        .WithEndpoint($"http://{hostname}:14268");
+                }
 
                 var reporterConfig = new Configuration.ReporterConfiguration(loggerFactory);
                 
