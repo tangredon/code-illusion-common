@@ -30,7 +30,7 @@ namespace Illusion.Common.Tracing
 
                 var senderConfig = new Configuration.SenderConfiguration(loggerFactory);
                 senderConfig
-                    .WithAgentHost(hostname); // using WithEndpoint will switch from Udp to Http sender
+                    .WithAgentHost(hostname);
 
                 var reporterConfig = new Configuration.ReporterConfiguration(loggerFactory);
                 
