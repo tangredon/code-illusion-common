@@ -18,23 +18,27 @@ namespace Illusion.Common.Tracing
             {
                 var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
-
                 var senderResolver = new SenderResolver(loggerFactory).RegisterSenderFactory<ThriftSenderFactory>();
                 Jaeger.Configuration.SenderConfiguration.DefaultSenderResolver = senderResolver;
 
                 var config = new Jaeger.Configuration(serviceName, loggerFactory);
 
-                var samplerConfig = new Configuration.SamplerConfiguration(loggerFactory);
-                samplerConfig.WithSamplingEndpoint($"http://{hostname}:5778");
-                config.WithSampler(samplerConfig);
+                //var samplerConfig = new Configuration.SamplerConfiguration(loggerFactory);
+                //samplerConfig
+                //    .WithSamplingEndpoint($"http://{hostname}:5778");
+
+                var senderConfig = new Configuration.SenderConfiguration(loggerFactory);
+                senderConfig
+                    .WithAgentHost(hostname); // using WithEndpoint will switch from Udp to Http sender
 
                 var reporterConfig = new Configuration.ReporterConfiguration(loggerFactory);
-                var senderConfig = new Configuration.SenderConfiguration(loggerFactory);
-                senderConfig.WithAgentHost(hostname);
-                senderConfig.WithSenderFactory(ThriftSenderFactory.Name);
-                senderConfig.WithSenderResolver(senderResolver);
-                reporterConfig.WithSender(senderConfig);
-                config.WithReporter(reporterConfig);
+                
+                reporterConfig
+                    .WithSender(senderConfig);
+
+                config
+                    .WithReporter(reporterConfig);
+                    //.WithSampler(samplerConfig);
 
                 var tracer = config.GetTracerBuilder()
                     .WithSampler(new ConstSampler(true))
@@ -46,7 +50,6 @@ namespace Illusion.Common.Tracing
 
             services.AddOpenTracing(builder =>
             {
-                builder.AddCoreFx();
                 builder.AddAspNetCore();
                 builder.AddLoggerProvider();
             });
