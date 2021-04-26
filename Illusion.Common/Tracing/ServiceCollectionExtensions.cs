@@ -23,9 +23,10 @@ namespace Illusion.Common.Tracing
 
                 var config = new Jaeger.Configuration(serviceName, loggerFactory);
 
-                //var samplerConfig = new Configuration.SamplerConfiguration(loggerFactory);
-                //samplerConfig
-                //    .WithSamplingEndpoint($"http://{hostname}:5778");
+                var samplerConfig = new Configuration.SamplerConfiguration(loggerFactory);
+                samplerConfig
+                    .WithType("const")
+                    .WithParam(1);
 
                 var senderConfig = new Configuration.SenderConfiguration(loggerFactory);
                 senderConfig
@@ -37,11 +38,10 @@ namespace Illusion.Common.Tracing
                     .WithSender(senderConfig);
 
                 config
-                    .WithReporter(reporterConfig);
-                    //.WithSampler(samplerConfig);
+                    .WithReporter(reporterConfig)
+                    .WithSampler(samplerConfig);
 
                 var tracer = config.GetTracerBuilder()
-                    .WithSampler(new ConstSampler(true))
                     .Build();
 
                 GlobalTracer.Register(tracer);
