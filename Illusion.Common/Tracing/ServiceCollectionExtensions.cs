@@ -10,7 +10,7 @@ namespace Illusion.Common.Tracing
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCustomOpenTracing(this IServiceCollection services, string serviceName)
+        public static IServiceCollection AddCustomOpenTracing(this IServiceCollection services, string serviceName, string hostname)
         {
             services.AddSingleton<ITracer>(serviceProvider =>
             {
@@ -20,6 +20,10 @@ namespace Illusion.Common.Tracing
                     .RegisterSenderFactory<ThriftSenderFactory>();
 
                 var config = new Jaeger.Configuration(serviceName, loggerFactory);
+
+                config.SamplerConfig.WithSamplingEndpoint($"{hostname}:5778");
+                config.ReporterConfig.SenderConfig.WithEndpoint($"{hostname}:6831");
+
                 var tracer = config.GetTracerBuilder()
                     .WithSampler(new ConstSampler(true))
                     .Build();
