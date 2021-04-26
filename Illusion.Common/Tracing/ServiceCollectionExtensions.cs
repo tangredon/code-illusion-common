@@ -50,6 +50,7 @@ namespace Illusion.Common.Tracing
 
             services.AddOpenTracing(builder =>
             {
+                builder.AddHttpHandler();
                 builder.AddAspNetCore();
                 builder.AddLoggerProvider();
             });
