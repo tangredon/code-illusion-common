@@ -18,3 +18,10 @@ steps:
   inputs:
     command: 'build'
     arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'cb5e5c0b-aa1d-4688-a3ff-e65476c9e30a/d99cfdbb-c33d-4667-9065-a67e001d5e66'
