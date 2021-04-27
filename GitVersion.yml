@@ -1,5 +1,5 @@
 assembly-versioning-scheme: MajorMinorPatch
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_BUILDNUMBER ?? WeightedPreReleaseNumber}'
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_BUILDID ?? WeightedPreReleaseNumber}'
 mode: ContinuousDeployment
 continuous-delivery-fallback-tag: ''
 branches:
