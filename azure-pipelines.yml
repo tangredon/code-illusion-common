@@ -10,8 +10,10 @@ variables:
 steps:
 - task: UseDotNet@2
   inputs:
+    packageType: 'sdk'
     version: '5.0.x'
     includePreviewVersions: true
+    performMultiLevelLookup: true
 
 - task: DotNetCoreCLI@2
   displayName: Build
@@ -28,6 +30,6 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/Illusion.Common/bin/Release/net5.0/*.nupkg'
+    packagesToPush: '$(Build.SourceDirectory)/**/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'cb5e5c0b-aa1d-4688-a3ff-e65476c9e30a/d99cfdbb-c33d-4667-9065-a67e001d5e66'
