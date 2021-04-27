@@ -1,35 +1,24 @@
-trigger:
-- development
-
-pool:
-  vmImage: ubuntu-latest
-
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '5.0.x'
-    includePreviewVersions: true
-    performMultiLevelLookup: true
+trigger:
+- mainline
+- development
+- release/*
 
-- task: DotNetCoreCLI@2
+pr:
+- mainline
+- development
+
+stages:
+- stage: initialization_stage
+  displayName: Initialization
+  jobs:
+  - template: pipeline/init.job.template.yml
+
+- stage: build_stage
   displayName: Build
-  inputs:
-    command: 'build'
-    arguments: '--configuration $(buildConfiguration) /p:PackageVersion=2.3.6'
-
-- task: Bash@3
-  displayName: Environment Variables
-  inputs:
-    targetType: 'inline'
-    script: 'env | sort'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'push'
-    packagesToPush: './Illusion.Common/bin/Release/*.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'cb5e5c0b-aa1d-4688-a3ff-e65476c9e30a/d99cfdbb-c33d-4667-9065-a67e001d5e66'
+  jobs:
+  - template: pipeline/build.job.template.yml
+    parameters:
+      buildConfigruration: $(buildConfigruration)
