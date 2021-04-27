@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Consul;
 using Microsoft.AspNetCore.Builder;
@@ -17,7 +18,7 @@ namespace Illusion.Common.Consul
         public static IServiceCollection AddConsul(this IServiceCollection services)
         {
             using var serviceProvider = services.BuildServiceProvider();
-            var configuration = serviceProvider.GetService<IConfiguration>();
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             var settings = configuration.GetSection(ConsulSettings.SectionName).Get<ConsulSettings>();
 
@@ -31,15 +32,15 @@ namespace Illusion.Common.Consul
             return services;
         }
 
-        public static IApplicationBuilder UseConsul(this IApplicationBuilder app)
+        public static IApplicationBuilder UseConsul(this IApplicationBuilder app, bool healthCheck = false)
         {
             var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("Illusion.Common.Consul");
 
-            var configuration = app.ApplicationServices.GetService<IConfiguration>();
+            var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
 
             var settings = configuration.GetSection(ConsulRegistrationSettings.SectionName).Get<ConsulRegistrationSettings>();
 
-            settings.Id = $"{settings.Name}:{Guid.NewGuid()}";
+            settings.Id = $"{settings.Name}:{configuration.GetValue<string>("COMPUTERNAME")}";
             //settings.Meta = new Dictionary<string, string>()
             //{
             //    {"Version", VersionInfo.Version}
@@ -59,6 +60,22 @@ namespace Illusion.Common.Consul
                 throw new Exception($"Invalid registration address {address}");
             }
 
+            var checks = new List<AgentServiceCheck>();
+
+            if (healthCheck)
+            {
+                var healthServiceCheck = new AgentServiceCheck
+                {
+                    HTTP = $"http://{uri.Host}:{uri.Port}/health",
+                    TLSSkipVerify = true,
+                    Interval = TimeSpan.FromSeconds(10),
+                    Timeout = TimeSpan.FromSeconds(1),
+                    DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(1),
+                };
+
+                checks.Add(healthServiceCheck);
+            }
+
             var registration = new AgentServiceRegistration()
             {
                 Meta = settings.Meta,
@@ -66,7 +83,8 @@ namespace Illusion.Common.Consul
                 ID = settings.Id,
                 Name = settings.Name,
                 Address = uri.Host,
-                Port = uri.Port
+                Port = uri.Port,
+                Checks = checks.ToArray()
             };
 
             logger.LogDebug("Register {@Registration}", registration);

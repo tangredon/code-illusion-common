@@ -3,10 +3,14 @@ using Illusion.Common.Framework.Events;
 
 namespace Illusion.Common.Framework
 {
-    public abstract class Entity<TId> : IInternalEventHandler
+    public abstract class BaseEntity<TId>
+    {
+        public TId Id { get; protected set; }
+    }
+
+    public abstract class Entity : BaseEntity<Guid>, IInternalEventHandler
     {
         private readonly Action<IEvent> _applier;
-        public TId Id { get; protected set; }
 
         protected Entity(Action<IEvent> applier) => _applier = applier;
 

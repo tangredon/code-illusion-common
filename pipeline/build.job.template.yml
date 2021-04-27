@@ -1,0 +1,31 @@
+parameters:
+  buildConfiguration: ''
+
+jobs:
+  - job: build
+    displayName: Build
+
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '5.0.x'
+        includePreviewVersions: true
+        performMultiLevelLookup: true
+
+    - task: DotNetCoreCLI@2
+      displayName: Build Package
+      inputs:
+        command: 'build'
+        arguments: '--configuration ${{ parameters.buildConfiguration }} /p:PackageVersion=$(Build.BuildNumber)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Push Package
+      inputs:
+        command: 'push'
+        packagesToPush: './Illusion.Common/bin/Release/*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: ${{ parameters.vstsFeed }}

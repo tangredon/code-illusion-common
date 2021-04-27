@@ -31,6 +31,10 @@ namespace Illusion.Common.Authentication
 
                     options.Events = new JwtBearerEvents
                     {
+                        OnMessageReceived = (context) =>
+                        {
+                            return Task.CompletedTask;
+                        },
                         OnTokenValidated = (context) =>
                         {
                             var identity = context.Principal?.Identity as ClaimsIdentity;
@@ -39,6 +43,7 @@ namespace Illusion.Common.Authentication
                                 return Task.CompletedTask;
                             }
 
+                            // Okta base62 to Guid conversion
                             var uid = identity.Claims.First(c => c.Type == "uid");
                             var uidBytes = uid.Value.FromBase62();
                             uidBytes = uidBytes.Reverse().ToArray();
