@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Base62;
+using Illusion.Common.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -44,11 +45,9 @@ namespace Illusion.Common.Authentication
                             }
 
                             // Okta base62 to Guid conversion
-                            var uid = identity.Claims.First(c => c.Type == "uid");
-                            var uidBytes = uid.Value.FromBase62();
-                            uidBytes = uidBytes.Reverse().ToArray();
+                            var uid = identity.Claims.First(c => c.Type == "uid").Value;
 
-                            var uuid = new Guid(uidBytes);
+                            var uuid = Base62Convertor.ConvertFrom(uid);
                             identity.AddClaim(new Claim(identity.NameClaimType, uuid.ToString()));
 
                             return Task.CompletedTask;
