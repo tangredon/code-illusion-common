@@ -46,6 +46,12 @@ stages:
           arguments: '--configuration $(buildConfiguration) /p:PackageVersion=$(Build.BuildNumber)'
 
       - task: DotNetCoreCLI@2
+        displayName: Unit Tests
+        inputs:
+          command: 'test'
+          publishTestResults: true
+
+      - task: DotNetCoreCLI@2
         displayName: Push Package
         inputs:
           command: 'push'
