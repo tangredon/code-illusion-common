@@ -23,8 +23,7 @@ namespace Illusion.Common.RawRabbit
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddRabbitCustom(this IServiceCollection services,
-            RawRabbitConfiguration configuration)
+        public static IServiceCollection AddRabbitCustom(this IServiceCollection services, RawRabbitConfiguration configuration)
         {
             services.AddRawRabbit(new RawRabbitOptions
             {
@@ -43,17 +42,17 @@ namespace Illusion.Common.RawRabbit
                     })
                     .UseContextForwarding()
                     .UseRetryLater()
-                    .UsePolly(new PolicyOptions
-                    {
-                        ConnectionPolicies = new ConnectionPolicies
-                        {
-                            Connect = Policy.NoOpAsync(),
-                            CreateChannel = Policy.NoOpAsync(),
-                            GetConnection = Policy.NoOpAsync()
-                        },
-                        PolicyAction = c => c
-                            .UsePolicy(Policy.NoOpAsync())
-                    })
+                    //.UsePolly(new PolicyOptions
+                    //{
+                    //    ConnectionPolicies = new ConnectionPolicies
+                    //    {
+                    //        Connect = Policy.NoOpAsync(),
+                    //        CreateChannel = Policy.NoOpAsync(),
+                    //        GetConnection = Policy.NoOpAsync(),
+                    //    },
+                    //    PolicyAction = c => c
+                    //        .UsePolicy(Policy.NoOpAsync()),
+                    //})
             });
 
             services.Remove(ServiceDescriptor.Singleton<ISerializer, JsonSerializer>());
