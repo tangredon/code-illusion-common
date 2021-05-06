@@ -42,17 +42,21 @@ namespace Illusion.Common.RawRabbit
                     })
                     .UseContextForwarding()
                     .UseRetryLater()
-                    //.UsePolly(new PolicyOptions
-                    //{
-                    //    ConnectionPolicies = new ConnectionPolicies
-                    //    {
-                    //        Connect = Policy.NoOpAsync(),
-                    //        CreateChannel = Policy.NoOpAsync(),
-                    //        GetConnection = Policy.NoOpAsync(),
-                    //    },
-                    //    PolicyAction = c => c
-                    //        .UsePolicy(Policy.NoOpAsync()),
-                    //})
+                    .UsePolly(ctx =>
+                    {
+                        ctx.UsePolicy(Policy.NoOpAsync());
+                    })
+                    .UsePolly(new PolicyOptions
+                    {
+                        ConnectionPolicies = new ConnectionPolicies
+                        {
+                            Connect = Policy.NoOpAsync(),
+                            CreateChannel = Policy.NoOpAsync(),
+                            GetConnection = Policy.NoOpAsync()
+                        },
+                        PolicyAction = c => c
+                            .UsePolicy(Policy.NoOpAsync()),
+                    })
             });
 
             services.Remove(ServiceDescriptor.Singleton<ISerializer, JsonSerializer>());
