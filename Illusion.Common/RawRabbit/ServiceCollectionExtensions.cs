@@ -42,10 +42,6 @@ namespace Illusion.Common.RawRabbit
                     })
                     .UseContextForwarding()
                     .UseRetryLater()
-                    .UsePolly(ctx =>
-                    {
-                        ctx.UsePolicy(Policy.NoOpAsync());
-                    })
                     .UsePolly(new PolicyOptions
                     {
                         ConnectionPolicies = new ConnectionPolicies
@@ -55,7 +51,9 @@ namespace Illusion.Common.RawRabbit
                             GetConnection = Policy.NoOpAsync()
                         },
                         PolicyAction = c => c
-                            .UsePolicy(Policy.NoOpAsync()),
+                            .UsePolicy(Policy.NoOpAsync(), PolicyKeys.QueueDeclare)
+                            .UsePolicy(Policy.NoOpAsync(), PolicyKeys.ExchangeDeclare)
+                            .UsePolicy(Policy.NoOpAsync())
                     })
             });
 
