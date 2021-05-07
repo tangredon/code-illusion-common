@@ -5,15 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenTracing.Util;
-using Polly;
 using RawRabbit;
 using RawRabbit.Configuration;
 using RawRabbit.DependencyInjection.ServiceCollection;
 using RawRabbit.Enrichers.GlobalExecutionId;
 using RawRabbit.Enrichers.HttpContext;
 using RawRabbit.Enrichers.MessageContext;
-using RawRabbit.Enrichers.Polly;
-using RawRabbit.Enrichers.Polly.Services;
 using RawRabbit.Instantiation;
 using RawRabbit.Pipe;
 using RawRabbit.Serialization;
@@ -42,19 +39,19 @@ namespace Illusion.Common.RawRabbit
                     })
                     .UseContextForwarding()
                     .UseRetryLater()
-                    .UsePolly(new PolicyOptions
-                    {
-                        ConnectionPolicies = new ConnectionPolicies
-                        {
-                            Connect = Policy.NoOpAsync(),
-                            CreateChannel = Policy.NoOpAsync(),
-                            GetConnection = Policy.NoOpAsync()
-                        },
-                        PolicyAction = c => c
-                            .UsePolicy(Policy.NoOpAsync(), PolicyKeys.QueueDeclare)
-                            .UsePolicy(Policy.NoOpAsync(), PolicyKeys.ExchangeDeclare)
-                            .UsePolicy(Policy.NoOpAsync())
-                    })
+                    //.UsePolly(new PolicyOptions
+                    //{
+                    //    ConnectionPolicies = new ConnectionPolicies
+                    //    {
+                    //        Connect = Policy.NoOpAsync(),
+                    //        CreateChannel = Policy.NoOpAsync(),
+                    //        GetConnection = Policy.NoOpAsync()
+                    //    },
+                    //    PolicyAction = c => c
+                    //        .UsePolicy(Policy.NoOpAsync(), PolicyKeys.QueueDeclare)
+                    //        .UsePolicy(Policy.NoOpAsync(), PolicyKeys.ExchangeDeclare)
+                    //        .UsePolicy(Policy.NoOpAsync())
+                    //})
             });
 
             services.Remove(ServiceDescriptor.Singleton<ISerializer, JsonSerializer>());
