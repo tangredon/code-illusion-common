@@ -1,5 +1,5 @@
 using System;
-using Illusion.Common.Extensions;
+using Illusion.Common.Core;
 using Xunit;
 
 namespace Illusion.Common.UnitTests

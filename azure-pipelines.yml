@@ -55,6 +55,6 @@ stages:
         displayName: Push Package
         inputs:
           command: 'push'
-          packagesToPush: './Illusion.Common/bin/Release/*.nupkg'
+          packagesToPush: './Illusion.Common.*/bin/Release/*.nupkg'
           nuGetFeedType: 'internal'
           publishVstsFeed: $(vstsFeed)
