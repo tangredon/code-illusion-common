@@ -13,18 +13,14 @@ namespace Illusion.Common.Domain
 
     public abstract class AggregateRoot : BaseAggregateRoot<Guid>
     {
-        public ulong Version
-        {
-            get => _version - (uint)_changes.Count;
-            private set => _version = value;
-        }
+        public ulong Version => _version - (uint)_changes.Count;
 
         protected AggregateRoot() => _changes = new List<IEvent>();
 
         protected void When(IEvent @event)
         {
             this.AsDynamic().WhenEvent((dynamic) @event);
-            Version++;
+            _version++;
         }
 
         protected virtual void WhenEvent(IEvent @event) => throw new InvalidOperationException($"Could not handle event of type {@event.GetType().Name}");
