@@ -17,7 +17,12 @@ namespace Illusion.Common.Domain
 
         protected AggregateRoot() => _changes = new List<IEvent>();
 
-        protected void When(IEvent @event) => this.AsDynamic().WhenEvent((dynamic)@event);
+        protected void When(IEvent @event)
+        {
+            this.AsDynamic().WhenEvent((dynamic) @event);
+            Version++;
+        }
+
         protected virtual void WhenEvent(IEvent @event) => throw new InvalidOperationException($"Could not handle event of type {@event.GetType().Name}");
 
         private readonly List<IEvent> _changes;
@@ -25,7 +30,6 @@ namespace Illusion.Common.Domain
         protected void Apply(IEvent @event)
         {
             When(@event);
-            EnsureValidState();
             _changes.Add(@event);
         }
 
@@ -36,7 +40,6 @@ namespace Illusion.Common.Domain
             foreach (var @event in history)
             {
                 When(@event);
-                Version++;
             }
         }
 
@@ -45,13 +48,14 @@ namespace Illusion.Common.Domain
             await foreach (var @event in history)
             {
                 When(@event);
-                Version++;
             }
         }
 
-        public void ClearChanges() => _changes.Clear();
-
-        protected abstract void EnsureValidState();
+        public void ClearChanges()
+        {
+            Version -= (uint)_changes.Count;
+            _changes.Clear();
+        }
 
         protected void ApplyToEntity(IInternalEventHandler entity, IEvent @event) => entity?.Handle(@event);
     }
