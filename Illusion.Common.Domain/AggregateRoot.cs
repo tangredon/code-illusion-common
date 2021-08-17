@@ -13,7 +13,11 @@ namespace Illusion.Common.Domain
 
     public abstract class AggregateRoot : BaseAggregateRoot<Guid>
     {
-        public ulong Version { get; private set; } = ulong.MaxValue;
+        public ulong Version
+        {
+            get => _version - (uint)_changes.Count;
+            private set => _version = value;
+        }
 
         protected AggregateRoot() => _changes = new List<IEvent>();
 
@@ -26,6 +30,7 @@ namespace Illusion.Common.Domain
         protected virtual void WhenEvent(IEvent @event) => throw new InvalidOperationException($"Could not handle event of type {@event.GetType().Name}");
 
         private readonly List<IEvent> _changes;
+        private ulong _version = ulong.MaxValue;
 
         protected void Apply(IEvent @event)
         {
@@ -53,7 +58,6 @@ namespace Illusion.Common.Domain
 
         public void ClearChanges()
         {
-            Version -= (uint)_changes.Count;
             _changes.Clear();
         }
 
