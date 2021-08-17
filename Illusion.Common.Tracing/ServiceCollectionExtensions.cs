@@ -38,39 +38,15 @@ namespace Illusion.Common.Tracing
                 return tracer;
             });
 
-            services.AddOpenTracing();
-            services.AddOpenTracingCoreServices(builder =>
+            services.AddOpenTracing(builder =>
             {
-                builder.AddLoggerProvider();
-                builder.AddEntityFrameworkCore();
-                builder.AddGenericDiagnostics();
-                builder.AddHttpHandler();
-                builder.AddMicrosoftSqlClient();
-                builder.AddSystemSqlClient();
-
-                if (AssemblyExists("Microsoft.AspNetCore.Hosting"))
+                builder.ConfigureAspNetCore(aspNetCoreOptions =>
                 {
-                    builder
-                        .AddAspNetCore()
-                        .ConfigureAspNetCore(aspNetCoreOptions =>
-                        {
-                            aspNetCoreOptions.Hosting.OperationNameResolver = (httpContext) => $"HTTP {httpContext.Request.Method} {httpContext.Request.Path}";
-                        });
-                }
+                    aspNetCoreOptions.Hosting.OperationNameResolver = (httpContext) => $"HTTP {httpContext.Request.Method} {httpContext.Request.Path}";
+                });
             });
 
             return services;
-        }
-
-        private static bool AssemblyExists(string assemblyName)
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                if (assembly.FullName.StartsWith(assemblyName))
-                    return true;
-            }
-            return false;
         }
     }
 }
