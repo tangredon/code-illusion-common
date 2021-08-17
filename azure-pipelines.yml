@@ -32,13 +32,6 @@ stages:
         inputs:
           updateAssemblyInfo: true
 
-      - task: UseDotNet@2
-        inputs:
-          packageType: 'sdk'
-          version: '5.0.x'
-          includePreviewVersions: true
-          performMultiLevelLookup: true
-
       - task: DotNetCoreCLI@2
         displayName: Build Package
         inputs:
@@ -52,6 +45,7 @@ stages:
           publishTestResults: true
 
       - task: DotNetCoreCLI@2
+        condition: eq(variables['Build.Reason'], 'PullRequest')
         displayName: Push Package
         inputs:
           command: 'push'
