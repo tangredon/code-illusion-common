@@ -2,8 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Base62;
-using Illusion.Common.Extensions;
+using Illusion.Common.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -12,15 +11,15 @@ namespace Illusion.Common.Authentication
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddOpenIdConnectionAuthentication(this IServiceCollection services, OpenIdConnectSettings settings)
+        public static IServiceCollection AddOpenIdConnectionAuthentication(this IServiceCollection services, OpenIdConnectOptions openIdOptions)
         {
-            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            if (openIdOptions == null) throw new ArgumentNullException(nameof(openIdOptions));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
-                    options.Authority = settings.Authority;
-                    options.Audience = settings.Audience;
+                    options.Authority = openIdOptions.Authority;
+                    options.Audience = openIdOptions.Audience;
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {

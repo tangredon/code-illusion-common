@@ -1,5 +1,5 @@
 ﻿using System;
-using Illusion.Common.Helpers;
+using Illusion.Common.Core;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -16,7 +16,7 @@ using RawRabbit.Pipe;
 using RawRabbit.Serialization;
 using JsonSerializer = RawRabbit.Serialization.JsonSerializer;
 
-namespace Illusion.Common.RawRabbit
+namespace Illusion.Common.RabbitMq
 {
     public static class ServiceCollectionExtensions
     {
