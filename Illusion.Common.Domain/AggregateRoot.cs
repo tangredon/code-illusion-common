@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Illusion.Common.Domain.Events;
 
@@ -44,9 +45,9 @@ namespace Illusion.Common.Domain
             }
         }
 
-        public async Task Load(IAsyncEnumerable<IEvent> history)
+        public async Task Load(IAsyncEnumerable<IEvent> history, CancellationToken cancellationToken)
         {
-            await foreach (var @event in history)
+            await foreach (var @event in history.WithCancellation(cancellationToken))
             {
                 When(@event);
             }
