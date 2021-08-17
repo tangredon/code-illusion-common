@@ -49,8 +49,6 @@ namespace Illusion.Common.Domain
             }
         }
 
-        protected T CreateEntity<T>() where T: Entity => (T)Activator.CreateInstance(typeof(T), (Action<IEvent>) Apply);
-
         public void ClearChanges() => _changes.Clear();
 
         protected abstract void EnsureValidState();
