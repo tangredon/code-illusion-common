@@ -17,7 +17,7 @@ namespace Illusion.Common.Domain
 
         protected AggregateRoot() => _changes = new List<IEvent>();
 
-        protected void When(IEvent @event) => WhenEvent((dynamic)@event);
+        protected void When(IEvent @event) => this.AsDynamic().WhenEvent((dynamic)@event);
         protected virtual void WhenEvent(IEvent @event) => throw new InvalidOperationException($"Could not handle event of type {@event.GetType().Name}");
 
         private readonly List<IEvent> _changes;
