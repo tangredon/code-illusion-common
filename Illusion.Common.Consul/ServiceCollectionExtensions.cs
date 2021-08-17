@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Illusion.Common.Consul
 {
@@ -27,14 +26,35 @@ namespace Illusion.Common.Consul
                 consulConfig.Address = new Uri(settings.Host);
             }));
 
-            services.Configure<ConsulSettings>(configuration.GetSection(ConsulSettings.SectionName));
+            return services;
+        }
+
+        public static IServiceCollection AddConsul(this IServiceCollection services, IConfiguration configuration)
+        {
+            var settings = configuration.GetSection(ConsulSettings.SectionName).Get<ConsulSettings>();
+
+            services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
+            {
+                consulConfig.Address = new Uri(settings.Host);
+            }));
+
+            return services;
+        }
+
+        public static IServiceCollection AddConsul(this IServiceCollection services, ConsulSettings settings)
+        {
+            services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
+            {
+                consulConfig.Address = new Uri(settings.Host);
+            }));
 
             return services;
         }
 
         public static IApplicationBuilder UseConsul(this IApplicationBuilder app, bool healthCheck = false)
         {
-            var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("Illusion.Common.Consul");
+            //var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("Illusion.Common.Consul");
+            var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(ServiceCollectionExtensions));
 
             var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
 

@@ -1,8 +1,8 @@
 ﻿namespace Illusion.Common.Authentication
 {
-    public class OpenIdConnectSettings
+    public class OpenIdConnectOptions
     {
-        public static string Name => "OpenIdConnect";
+        public static string SectionName => "OpenIdConnect";
 
         public string Authority { get; set; }
         public string Audience { get; set; }
