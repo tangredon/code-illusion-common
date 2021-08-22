@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Illusion.Common.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -8,11 +10,14 @@ namespace Illusion.Common.Telemetry
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddTelemetry(this IServiceCollection services, TelemetryOptions telemetryOptions)
+        public static IServiceCollection AddTelemetry(this IServiceCollection services, IConfiguration configuration)
         {
+            var serviceOptions = configuration.GetSection(ServiceOptions.SectionName).Get<ServiceOptions>();
+            var telemetryOptions = configuration.GetSection(TelemetryOptions.SectionName).Get<TelemetryOptions>();
+
             services.AddOpenTelemetryTracing(builder =>
             {
-                builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(telemetryOptions.Service.Name, telemetryOptions.Service.Namespace, telemetryOptions.Service.Version));
+                builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceOptions.Name, serviceOptions.Namespace, serviceOptions.Version));
                 builder.AddAspNetCoreInstrumentation(options =>
                 {
                     options.Enrich = (activity, eventName, rawObject) =>
