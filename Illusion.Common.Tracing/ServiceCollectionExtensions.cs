@@ -24,7 +24,7 @@ namespace Illusion.Common.Tracing
                 var sampler = new ConstSampler(sample: true);
                 var reporter = new RemoteReporter.Builder()
                     .WithLoggerFactory(loggerFactory)
-                    .WithSender(new GrpcSender($"{options.Host}:{options.Port}", ChannelCredentials.Insecure, 0))
+                    .WithSender(new GrpcSender($"{options.Host}", ChannelCredentials.Insecure, 0))
                     .Build();
 
                 var tracer = new Tracer.Builder(options.ServiceName)

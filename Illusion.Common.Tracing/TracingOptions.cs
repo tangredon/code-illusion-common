@@ -10,9 +10,6 @@ namespace Illusion.Common.Tracing
         public string Host { get; set; }
 
         [Required]
-        public string Port { get; set; }
-
-        [Required]
         public string ServiceName { get; set; }
     }
 }
