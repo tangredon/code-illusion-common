@@ -33,7 +33,7 @@ jobs:
       targetType: 'inline'
       script: |
         "Version: $(Build.BuildNumber)"
-        'Write-Host "##vso[task.setvariable variable=version;isOutput=true]$(Build.BuildNumber)"'
+        'Write-Host "##vso[task.setvariable variable=version;isOutput=true]$(Build.BuildNumber)'
 
   - task: powershell@2
     name: setBuildQueue
