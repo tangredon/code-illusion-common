@@ -36,7 +36,7 @@ namespace Illusion.Common.FeatureFlags
             }
             else
             {
-                services.AddSingleton<IFeatureFlagProvider, DevFeatureFlagProvider>();
+                services.AddSingleton<IFeatureFlagProvider, DevelopmentFeatureFlagProvider>();
             }
 
             return services;
