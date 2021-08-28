@@ -38,7 +38,7 @@ namespace Illusion.Common.FeatureFlags
                 case "off":
                     return false;
                 default:
-                    _logger.LogError($"Could not map feature ${feature}; treatment={treatment}");
+                    _logger.LogError($"Could not map feature={feature}; treatment={treatment}");
                     return false;
             }
         }
