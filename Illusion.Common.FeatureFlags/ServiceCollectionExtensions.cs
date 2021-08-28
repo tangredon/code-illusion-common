@@ -17,7 +17,7 @@ namespace Illusion.Common.FeatureFlags
     {
         public static IServiceCollection AddFeatureFlags(this IServiceCollection services, IConfiguration configuration)
         {
-            var options = configuration.GetSection(FeatureFlagsOptions.SectionName).Get<FeatureFlagsOptions>();
+            var options = configuration.GetSection(FeatureFlagsOptions.SectionName).Get<FeatureFlagsOptions>() ?? new FeatureFlagsOptions();
 
             var config = new ConfigurationOptions
             {
