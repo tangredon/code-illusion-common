@@ -44,8 +44,9 @@ jobs:
         $testsExist = Test-Path -Path "$(project.name).UnitTests"
         Write-Output "##vso[task.setvariable variable=TestsExist]$testsExist"
 
-  - task: printAllVariables@1
-    displayName: 'Print all variables'
+  # GOOD FOR DEBUG, LEAVE IT HERE
+  # - task: printAllVariables@1
+  #   displayName: 'Print all variables'
 
   - task: DotNetCoreCLI@2
     condition: eq(variables['TestsExist'], True)
