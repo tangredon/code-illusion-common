@@ -27,7 +27,7 @@ $editedFiles | ForEach-Object {
     Switch -Wildcard ($_ ) {		
         "Illusion.Common.Core/*" { 
 			Write-Host "Illusion.Common.Core changed"
-			AppendQueueVariable "Illusion.Common.Core"
+			AppendQueueVariable "Core"
 		}
         # The rest of your path filters
     }
