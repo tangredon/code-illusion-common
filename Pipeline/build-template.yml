@@ -43,7 +43,7 @@ jobs:
       publishTestResults: true
 
   - task: DotNetCoreCLI@2
-    condition: ne(variables['Build.Reason'], 'PullRequest')
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')
     displayName: Push Package
     inputs:
       command: 'push'
