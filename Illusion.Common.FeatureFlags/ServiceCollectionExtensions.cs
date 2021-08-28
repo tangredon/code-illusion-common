@@ -17,20 +17,27 @@ namespace Illusion.Common.FeatureFlags
     {
         public static IServiceCollection AddFeatureFlags(this IServiceCollection services, IConfiguration configuration)
         {
-            var options = configuration.GetSection(FeatureFlagsOptions.SectionName).Get<FeatureFlagsOptions>() ?? new FeatureFlagsOptions();
+            var options = configuration.GetSection(FeatureFlagsOptions.SectionName).Get<FeatureFlagsOptions>();
 
-            var config = new ConfigurationOptions
+            if (options != null)
             {
-                StreamingEnabled = true
-            };
+                var config = new ConfigurationOptions
+                {
+                    StreamingEnabled = true
+                };
 
-            var factory = new SplitFactory(options.ApiKey, config);
-            var sdk = factory.Client();
+                var factory = new SplitFactory(options.ApiKey, config);
+                var sdk = factory.Client();
 
-            services.AddSingleton<IFeatureFlagProvider, FeatureFlagProvider>(sp =>
+                services.AddSingleton<IFeatureFlagProvider, FeatureFlagProvider>(sp =>
+                {
+                    return new FeatureFlagProvider(sp.GetRequiredService<IHttpContextAccessor>(), sdk, sp.GetRequiredService<ILogger<FeatureFlagProvider>>());
+                });
+            }
+            else
             {
-                return new FeatureFlagProvider(sp.GetRequiredService<IHttpContextAccessor>(), sdk, sp.GetRequiredService<ILogger<FeatureFlagProvider>>());
-            });
+                services.AddSingleton<IFeatureFlagProvider, DevFeatureFlagProvider>();
+            }
 
             return services;
         }
