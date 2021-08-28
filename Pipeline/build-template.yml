@@ -3,6 +3,7 @@ parameters:
     name: '--'
     BuildConfiguration: 'Release'
     BuildPlatform: 'any cpu'
+    ProjectIdentifier: '$(project.identifier)'
 
 jobs:
 - job: ${{ parameters.name }}
@@ -11,7 +12,9 @@ jobs:
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     BuildPlatform: ${{ parameters.BuildPlatform }}
-    project.name: $[ dependencies.Build_Queue.outputs['Variables.projectIdentifier'] ].$(name)
+    project.identifier: $[ dependencies.Build_Queue.outputs['Variables.projectIdentifier'] ]
+    Parameters.ProjectIdentifier: ${{ parameters.ProjectIdentifier }}
+    project.name: ${{ parameters.ProjectIdentifier }}.${{ parameters.name }}
     project.path: $(Build.SourcesDirectory)/$(project.name)
     myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
     version: $[ dependencies.Build_Queue.outputs['Variables.version'] ]
