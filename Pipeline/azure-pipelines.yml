@@ -62,6 +62,41 @@ jobs:
     codeName: Consul
     projectName: 'Illusion.Common.Consul'
     vstsFeed: $(vstsFeed)
+  
+- template: build-template.yml
+  parameters:
+    name: Common_Domain
+    codeName: Domain
+    projectName: 'Illusion.Common.Domain'
+    vstsFeed: $(vstsFeed)
+
+- template: build-template.yml
+  parameters:
+    name: Common_FeatureFlags
+    codeName: FeatureFlags
+    projectName: 'Illusion.Common.FeatureFlags'
+    vstsFeed: $(vstsFeed)
+
+- template: build-template.yml
+  parameters:
+    name: Common_MediatR
+    codeName: MediatR
+    projectName: 'Illusion.Common.MediatR'
+    vstsFeed: $(vstsFeed)
+
+- template: build-template.yml
+  parameters:
+    name: Common_RabbitMq
+    codeName: RabbitMq
+    projectName: 'Illusion.Common.RabbitMq'
+    vstsFeed: $(vstsFeed)
+    
+- template: build-template.yml
+  parameters:
+    name: Common_Telemetry
+    codeName: Telemetry
+    projectName: 'Illusion.Common.Telemetry'
+    vstsFeed: $(vstsFeed)
 
 # - template: build-template.yml
 #   parameters:

@@ -31,12 +31,35 @@ $editedFiles | ForEach-Object {
 		}
         "Illusion.Common.Authentication/*" { 
 			Write-Host "Illusion.Common.Authentication changed"
-            AppendQueueVariable "Authentication"
 			AppendQueueVariable "Core"
+            AppendQueueVariable "Authentication"
 		}
         "Illusion.Common.Consul/*" { 
 			Write-Host "Illusion.Common.Consul changed"
 			AppendQueueVariable "Consul"
+		}
+        "Illusion.Common.Domain/*" { 
+			Write-Host "Illusion.Common.Domain changed"
+			AppendQueueVariable "Domain"
+		}
+        "Illusion.Common.FeatureFlags/*" { 
+			Write-Host "Illusion.Common.FeatureFlags changed"
+            AppendQueueVariable "Core"
+			AppendQueueVariable "FeatureFlags"
+		}
+        "Illusion.Common.MediatR/*" { 
+			Write-Host "Illusion.Common.MediatR changed"
+			AppendQueueVariable "MediatR"
+		}
+        "Illusion.Common.RabbitMq/*" { 
+			Write-Host "Illusion.Common.RabbitMq changed"
+            AppendQueueVariable "Core"
+			AppendQueueVariable "RabbitMq"
+		}
+        "Illusion.Common.Telemetry/*" { 
+			Write-Host "Illusion.Common.Telemetry changed"
+            AppendQueueVariable "Core"
+			AppendQueueVariable "Telemetry"
 		}
         # The rest of your path filters
     }
