@@ -4,7 +4,7 @@ parameters:
     BuildConfiguration: 'Release'
     BuildPlatform: 'any cpu'
     solutionFolder: '--'
-    projectFile: '/Api/Api.csproj'
+    projectFile: '--'
     RestoreBuildProjects: '$(project.file)'    
 
 jobs:

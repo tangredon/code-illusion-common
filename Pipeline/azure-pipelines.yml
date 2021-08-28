@@ -28,7 +28,7 @@ jobs:
   parameters:
     name: Common_Core
     solutionFolder: 'Illusion.Common.Core'
-    projectFile: '/Illusion.Common.Core/Illusion.Common.Core.csproj'
+    projectFile: '/Illusion.Common.Core.csproj'
 
 # - template: build-template.yml
 #   parameters:

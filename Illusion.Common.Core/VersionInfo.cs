@@ -4,7 +4,7 @@ namespace Illusion.Common.Core
 {
     public static class VersionInfo
     {
-        public static string Version => Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "unknown";
+        public static string Version => Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "0.0.0";
     }
 
     public class ServiceOptions
