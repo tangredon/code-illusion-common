@@ -1,4 +1,5 @@
 variables:
+  projectIdentifier: "Illusion.Common"
   buildConfiguration: 'Release'
   vstsFeed: 'cb5e5c0b-aa1d-4688-a3ff-e65476c9e30a/d99cfdbb-c33d-4667-9065-a67e001d5e66'
 
@@ -28,75 +29,55 @@ jobs:
       updateAssemblyInfo: true
 
   - task: PowerShell@2
-    name: SetVersion
+    name: Variables
+    displayName: Set Job Variables
     inputs:
       targetType: 'inline'
       script: |
+        "Project Identifier: $(projectIdentifier)"
+        'Write-Host "##vso[task.setvariable variable=projectIdentifier;isOutput=true]$(projectIdentifier)'
         "Version: $(Build.BuildNumber)"
         'Write-Host "##vso[task.setvariable variable=version;isOutput=true]$(Build.BuildNumber)'
+        'Write-Host "##vso[task.setvariable variable=vsts;isOutput=true]$(vstsFeed)'
 
   - task: powershell@2
     name: setBuildQueue
+    displayName: 'Get Service Build Queue'    
     inputs:
       targetType: filePath
       filePath: ./Pipeline/get-service-queue.ps1
-    displayName: 'Get Service Build Queue'    
 
 - template: build-template.yml
   parameters:
-    name: Common_Core
-    codeName: Core
-    projectName: 'Illusion.Common.Core'
-    vstsFeed: $(vstsFeed)
+    name: Core
 
 - template: build-template.yml
   parameters:
-    name: Common_Authentication
-    codeName: Authentication
-    projectName: 'Illusion.Common.Authentication'
-    vstsFeed: $(vstsFeed)
+    name: Authentication
 
 - template: build-template.yml
   parameters:
-    name: Common_Consul
-    codeName: Consul
-    projectName: 'Illusion.Common.Consul'
-    vstsFeed: $(vstsFeed)
+    name: Consul
   
 - template: build-template.yml
   parameters:
-    name: Common_Domain
-    codeName: Domain
-    projectName: 'Illusion.Common.Domain'
-    vstsFeed: $(vstsFeed)
+    name: Domain
 
 - template: build-template.yml
   parameters:
-    name: Common_FeatureFlags
-    codeName: FeatureFlags
-    projectName: 'Illusion.Common.FeatureFlags'
-    vstsFeed: $(vstsFeed)
+    name: FeatureFlags
 
 - template: build-template.yml
   parameters:
-    name: Common_MediatR
-    codeName: MediatR
-    projectName: 'Illusion.Common.MediatR'
-    vstsFeed: $(vstsFeed)
+    name: MediatR
 
 - template: build-template.yml
   parameters:
-    name: Common_RabbitMq
-    codeName: RabbitMq
-    projectName: 'Illusion.Common.RabbitMq'
-    vstsFeed: $(vstsFeed)
+    name: RabbitMq
     
 - template: build-template.yml
   parameters:
-    name: Common_Telemetry
-    codeName: Telemetry
-    projectName: 'Illusion.Common.Telemetry'
-    vstsFeed: $(vstsFeed)
+    name: Telemetry
 
 # - template: build-template.yml
 #   parameters:

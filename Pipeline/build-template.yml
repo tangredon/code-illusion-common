@@ -1,12 +1,8 @@
 
 parameters:
     name: '--'
-    codeName: '--'
     BuildConfiguration: 'Release'
     BuildPlatform: 'any cpu'
-    projectName: '--'
-    RestoreBuildProjects: '$(project.file)'
-    vstsFeed: '--'
 
 jobs:
 - job: ${{ parameters.name }}
@@ -15,12 +11,12 @@ jobs:
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     BuildPlatform: ${{ parameters.BuildPlatform }}
-    project.path: $(Build.SourcesDirectory)/${{ parameters.projectName }}
-    project.file: ${{ parameters.projectName }}/${{ parameters.projectName }}.csproj
-    Parameters.RestoreBuildProjects: ${{ parameters.RestoreBuildProjects }}
+    project.name: $[ dependencies.Build_Queue.outputs['Variables.projectIdentifier'] ].$(name)
+    project.path: $(Build.SourcesDirectory)/$(project.name)
     myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
-    version: $[ dependencies.Build_Queue.outputs['SetVersion.version'] ]
-  condition: and(succeeded(), or(contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.codeName }}'), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], 'all'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
+    version: $[ dependencies.Build_Queue.outputs['Variables.version'] ]
+    vstsFeed: $[ dependencies.Build_Queue.outputs['Variables.vsts'] ]
+  condition: and(succeeded(), or(contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.name }}'), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], 'all'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
   steps:
   - task: powershell@2
     displayName: Print Variables
@@ -51,4 +47,4 @@ jobs:
       command: 'push'
       packagesToPush: '$(project.path)/bin/Release/*.nupkg'
       nuGetFeedType: 'internal'
-      publishVstsFeed: ${{ parameters.vstsFeed }}
+      publishVstsFeed: $(vstsFeed)
