@@ -28,7 +28,7 @@ jobs:
 
   - task: DotNetCoreCLI@2
     displayName: Build
-    workingDirectory: $(project.path)
     inputs:
       command: 'build'
+      workingDirectory: $(project.path)
       arguments: '--configuration $(BuildConfiguration) /p:PackageVersion=$(version)'
