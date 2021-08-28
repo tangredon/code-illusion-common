@@ -42,7 +42,10 @@ jobs:
       targetType: inline
       script: |
         $testsExist = Test-Path -Path "$(project.name).UnitTests"
-        Write-Output "##vso[task.setvariable variable=TestsExist]$testExists"
+        Write-Output "##vso[task.setvariable variable=TestsExist]$testsExists"
+
+  - task: printAllVariables@1
+    displayName: 'Print all variables'
 
   - task: DotNetCoreCLI@2
     condition: eq(variables['TestsExist'], True)
