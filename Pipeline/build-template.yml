@@ -35,7 +35,17 @@ jobs:
       workingDirectory: $(project.path)
       arguments: '--configuration $(BuildConfiguration) /p:PackageVersion=$(version)'
 
+  - task: PowerShell@2
+    displayName: Check for Unit Tests
+    inputs:
+      workingDirectory: $(project.path)
+      targetType: inline
+      script: |
+        $testsExist = Test-Path -Path "$(System.DefaultWorkingDirectory)/file.txt"
+        Write-Output "##vso[task.setvariable variable=TestsExist]$testExists"
+
   - task: DotNetCoreCLI@2
+    condition: eq(variables['TestsExist'], True)
     displayName: Unit Tests
     inputs:
       command: 'test'
