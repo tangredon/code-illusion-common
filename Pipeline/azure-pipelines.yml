@@ -35,18 +35,18 @@ jobs:
         "Version: $(Build.BuildNumber)"
         'Write-Host "##vso[task.setvariable variable=version;isOutput=true]$(Build.BuildNumber)"'
 
-#   - task: powershell@2
-#     name: setBuildQueue
-#     inputs:
-#       targetType: filePath
-#       filePath: ./Pipeline/get-service-queue.ps1
-#     displayName: 'Get Service Build Queue'    
+  - task: powershell@2
+    name: setBuildQueue
+    inputs:
+      targetType: filePath
+      filePath: ./Pipeline/get-service-queue.ps1
+    displayName: 'Get Service Build Queue'    
 
-# - template: build-template.yml
-#   parameters:
-#     name: Common_Core
-#     solutionFolder: 'Illusion.Common.Core'
-#     projectFile: '/Illusion.Common.Core.csproj'
+- template: build-template.yml
+  parameters:
+    name: Common_Core
+    solutionFolder: 'Illusion.Common.Core'
+    projectFile: '/Illusion.Common.Core.csproj'
 
 # - template: build-template.yml
 #   parameters:

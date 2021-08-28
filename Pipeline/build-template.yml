@@ -17,6 +17,7 @@ jobs:
     project.file: ${{ parameters.solutionFolder }}${{ parameters.projectFile }}
     Parameters.RestoreBuildProjects: ${{ parameters.RestoreBuildProjects }}
     myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
+    version: $[ dependencies.Build_Queue.outputs['SetVersion.version'] ]
   condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.solutionFolder }}'))
   steps:
   - task: powershell@2
@@ -27,5 +28,5 @@ jobs:
   - task: DotNetCoreCLI@2
     displayName: Restore
     inputs:
-      command: restore
-      projects: '$(Parameters.RestoreBuildProjects)'      
+      command: 'build'
+      arguments: '--configuration $(BuildConfiguration) /p:PackageVersion=$(version)'
