@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Illusion.Common.Core\Illusion.Common.Core.csproj" />
+    <ProjectReference Include="..\Illusion.Common.Core.csproj" />
   </ItemGroup>
 
 </Project>
