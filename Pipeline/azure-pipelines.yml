@@ -47,6 +47,7 @@ jobs:
     name: Common_Core
     solutionFolder: 'Illusion.Common.Core'
     projectFile: '/Illusion.Common.Core.csproj'
+    vstsFeed: $(vstsFeed)
 
 # - template: build-template.yml
 #   parameters:

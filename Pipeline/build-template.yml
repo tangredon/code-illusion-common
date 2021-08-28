@@ -5,7 +5,8 @@ parameters:
     BuildPlatform: 'any cpu'
     solutionFolder: '--'
     projectFile: '--'
-    RestoreBuildProjects: '$(project.file)'    
+    RestoreBuildProjects: '$(project.file)'
+    vstsFeed: '--'
 
 jobs:
 - job: ${{ parameters.name }}
@@ -22,14 +23,12 @@ jobs:
   condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.solutionFolder }}'))
   steps:
   - task: powershell@2
+    displayName: Print Variables
     inputs:
       targetType: inline
-      script: 'Write-Host "Build Queue init: $(buildQueueInit) and from parameters $(myBuildQueue)"'
-
-  - task: PowerShell@2
-    inputs:
-      targetType: inline
-      script: 'Write-Host "Current path: $(project.path)"'
+      script: |
+        'Write-Host "Build Queue init: $(buildQueueInit) and from parameters $(myBuildQueue)"'
+        'Write-Host "Current path: $(project.path)"'
 
   - task: DotNetCoreCLI@2
     displayName: Build
@@ -37,3 +36,19 @@ jobs:
       command: 'build'
       workingDirectory: $(project.path)
       arguments: '--configuration $(BuildConfiguration) /p:PackageVersion=$(version)'
+
+  - task: DotNetCoreCLI@2
+    displayName: Unit Tests
+    inputs:
+      command: 'test'
+      workingDirectory: $(project.path)
+      publishTestResults: true
+
+  - task: DotNetCoreCLI@2
+    condition: ne(variables['Build.Reason'], 'PullRequest')
+    displayName: Push Package
+    inputs:
+      command: 'push'
+      packagesToPush: '$(project.path)/bin/Release/*.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: ${{ parameters.vstsFeed }}
