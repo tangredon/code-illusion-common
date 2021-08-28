@@ -17,18 +17,36 @@ resources:
 jobs:
 - job: Build_Queue
   steps:  
-  - task: powershell@2
-    name: setBuildQueue
+  - task: gitversion/setup@0
+    displayName: Install GitVersion
     inputs:
-      targetType: filePath
-      filePath: ./Pipeline/get-service-queue.ps1
-    displayName: 'Get Service Build Queue'    
+      versionSpec: '5.6.8'
 
-- template: build-template.yml
-  parameters:
-    name: Common_Core
-    solutionFolder: 'Illusion.Common.Core'
-    projectFile: '/Illusion.Common.Core.csproj'
+  - task: gitversion/execute@0
+    displayName: Execute GitVersion
+    inputs:
+      updateAssemblyInfo: true
+
+  - task: PowerShell@2
+    name: SetVersion
+    inputs:
+      targetType: 'inline'
+      script: |
+        "Version: $(Build.BuildNumber)"
+        'Write-Host "##vso[task.setvariable variable=version;isOutput=true]$(Build.BuildNumber)"'
+
+#   - task: powershell@2
+#     name: setBuildQueue
+#     inputs:
+#       targetType: filePath
+#       filePath: ./Pipeline/get-service-queue.ps1
+#     displayName: 'Get Service Build Queue'    
+
+# - template: build-template.yml
+#   parameters:
+#     name: Common_Core
+#     solutionFolder: 'Illusion.Common.Core'
+#     projectFile: '/Illusion.Common.Core.csproj'
 
 # - template: build-template.yml
 #   parameters:
