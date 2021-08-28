@@ -41,7 +41,7 @@ jobs:
       workingDirectory: $(project.path)
       targetType: inline
       script: |
-        $testsExist = Test-Path -Path "$(System.DefaultWorkingDirectory)/file.txt"
+        $testsExist = Test-Path -Path "$(project.name).UnitTests"
         Write-Output "##vso[task.setvariable variable=TestsExist]$testExists"
 
   - task: DotNetCoreCLI@2
