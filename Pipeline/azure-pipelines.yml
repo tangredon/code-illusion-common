@@ -49,6 +49,20 @@ jobs:
     projectName: 'Illusion.Common.Core'
     vstsFeed: $(vstsFeed)
 
+- template: build-template.yml
+  parameters:
+    name: Common_Authentication
+    codeName: Authentication
+    projectName: 'Illusion.Common.Authentication'
+    vstsFeed: $(vstsFeed)
+
+- template: build-template.yml
+  parameters:
+    name: Common_Consul
+    codeName: Consul
+    projectName: 'Illusion.Common.Consul'
+    vstsFeed: $(vstsFeed)
+
 # - template: build-template.yml
 #   parameters:
 #     name: Service_02

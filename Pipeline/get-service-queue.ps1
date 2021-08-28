@@ -29,6 +29,15 @@ $editedFiles | ForEach-Object {
 			Write-Host "Illusion.Common.Core changed"
 			AppendQueueVariable "Core"
 		}
+        "Illusion.Common.Authentication/*" { 
+			Write-Host "Illusion.Common.Authentication changed"
+            AppendQueueVariable "Authentication"
+			AppendQueueVariable "Core"
+		}
+        "Illusion.Common.Consul/*" { 
+			Write-Host "Illusion.Common.Consul changed"
+			AppendQueueVariable "Consul"
+		}
         # The rest of your path filters
     }
 }
