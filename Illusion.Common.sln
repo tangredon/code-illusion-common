@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Illusion.Common.MediatR", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Illusion.Common.Domain", "Illusion.Common.Domain\Illusion.Common.Domain.csproj", "{A2C836C5-6F9A-4025-BE19-624D7D1CB4BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Illusion.Common.Telemetry", "Illusion.Common.Telemetry\Illusion.Common.Telemetry.csproj", "{DDC6A9AC-5192-43F3-AF01-C25454C80244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Illusion.Common.Telemetry", "Illusion.Common.Telemetry\Illusion.Common.Telemetry.csproj", "{DDC6A9AC-5192-43F3-AF01-C25454C80244}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Illusion.Common", "Illusion.Common\Illusion.Common.csproj", "{4BF5A07E-DB00-4A19-A22B-995068BDEC30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Illusion.Common.FeatureFlags", "Illusion.Common.FeatureFlags\Illusion.Common.FeatureFlags.csproj", "{92E1F50A-BDC1-4D76-AAAE-247BC57B6DC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{4BF5A07E-DB00-4A19-A22B-995068BDEC30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BF5A07E-DB00-4A19-A22B-995068BDEC30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BF5A07E-DB00-4A19-A22B-995068BDEC30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92E1F50A-BDC1-4D76-AAAE-247BC57B6DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92E1F50A-BDC1-4D76-AAAE-247BC57B6DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92E1F50A-BDC1-4D76-AAAE-247BC57B6DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92E1F50A-BDC1-4D76-AAAE-247BC57B6DC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

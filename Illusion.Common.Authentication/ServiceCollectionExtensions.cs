@@ -50,6 +50,9 @@ namespace Illusion.Common.Authentication
                             var uuid = Base62Convertor.ConvertFrom(uid);
                             identity.AddClaim(new Claim(identity.NameClaimType, uuid.ToString()));
 
+                            var email = identity.Claims.First(c => c.Type == "sub").Value;
+                            identity.AddClaim(new Claim(ClaimTypes.Email, email));
+
                             return Task.CompletedTask;
                         }
                     };
