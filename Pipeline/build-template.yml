@@ -20,7 +20,7 @@ jobs:
     Parameters.RestoreBuildProjects: ${{ parameters.RestoreBuildProjects }}
     myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
     version: $[ dependencies.Build_Queue.outputs['SetVersion.version'] ]
-  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.codeName }}'))
+  condition: and(succeeded(), or(contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.codeName }}'), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], 'all'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
   steps:
   - task: powershell@2
     displayName: Print Variables
