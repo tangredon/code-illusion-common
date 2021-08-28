@@ -39,7 +39,7 @@ jobs:
     displayName: Unit Tests
     inputs:
       command: 'test'
-      workingDirectory: $(project.path)
+      workingDirectory: $(project.path)/$(project.name).UnitTests
       publishTestResults: true
 
   - task: DotNetCoreCLI@2
