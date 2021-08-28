@@ -9,6 +9,12 @@
     <PackageIcon>logo.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Illusion.Common.Domain.UnitTests\**" />
+    <EmbeddedResource Remove="Illusion.Common.Domain.UnitTests\**" />
+    <None Remove="Illusion.Common.Domain.UnitTests\**" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\Assets\logo.png">
       <Pack>True</Pack>
