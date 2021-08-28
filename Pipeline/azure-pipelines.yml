@@ -1,0 +1,45 @@
+variables:
+  buildConfiguration: 'Release'
+  vstsFeed: 'cb5e5c0b-aa1d-4688-a3ff-e65476c9e30a/d99cfdbb-c33d-4667-9065-a67e001d5e66'
+
+trigger:
+- development
+- release/mainline
+- release/*
+
+pr:
+- development
+- release/mainline
+
+resources:
+- repo: self
+
+jobs:
+- job: Build_Queue
+  steps:  
+  - task: powershell@2
+    name: setBuildQueue
+    inputs:
+      targetType: filePath
+      filePath: ./Pipeline/get-service-queue.ps1
+    displayName: 'Get Service Build Queue'    
+
+- template: build-template.yml
+  parameters:
+    name: Common Core
+    solutionFolder: 'Illusion.Common.Core'
+    projectFile: '/Illusion.Common.Core/Illusion.Common.Core.csproj'
+
+# - template: build-template.yml
+#   parameters:
+#     name: Service_02
+#     solutionFolder: 'service2'
+#     projectFile: '/service2.api/service2.api.csproj'
+
+# - template: build-template.yml
+#   parameters:
+#     name: Service_03
+#     solutionFolder: 'service3'
+#     projectFile: '/service3.api/service3.api.csproj'
+
+# Add more template jobs with parameters for other Services
