@@ -26,6 +26,11 @@ jobs:
       targetType: inline
       script: 'Write-Host "Build Queue init: $(buildQueueInit) and from parameters $(myBuildQueue)"'
 
+  - task: PowerShell@2
+    inputs:
+      targetType: inline
+      script: 'Write-Host "Current path: $(project.path)"'
+
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
