@@ -14,7 +14,7 @@ jobs:
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     BuildPlatform: ${{ parameters.BuildPlatform }}
-    project.path: $(Build.SourcesDirectory)/${solutionFolder}
+    project.path: $(Build.SourcesDirectory)/${{ parameters.solutionFolder }}
     project.file: ${{ parameters.solutionFolder }}${{ parameters.projectFile }}
     Parameters.RestoreBuildProjects: ${{ parameters.RestoreBuildProjects }}
     myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
