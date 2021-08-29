@@ -54,6 +54,7 @@ jobs:
     inputs:
       command: 'test'
       workingDirectory: $(project.path)/$(project.name).UnitTests
+      testRunTitle: ${{ parameters.name }}
       publishTestResults: true
 
   - task: DotNetCoreCLI@2
