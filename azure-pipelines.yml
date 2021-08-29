@@ -47,7 +47,7 @@ jobs:
       targetType: filePath
       filePath: ./Pipeline/build-queue.ps1
 
-- template: ./Pipeline/build-template.yml
+- template: Pipeline/build-template.yml
   parameters:
     name: Core
 
@@ -67,14 +67,14 @@ jobs:
   parameters:
     name: FeatureFlags
 
-- template: ./Pipelinebuild-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: MediatR
 
-- template: ./Pipelinebuild-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: RabbitMq
     
-- template: ./Pipelinebuild-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: Telemetry
