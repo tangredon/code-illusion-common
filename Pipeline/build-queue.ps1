@@ -109,6 +109,7 @@ $editedFiles | ForEach-Object {
                 }
             }
 
+            # todo: move this out of the changedFile loop
             $map[$project] = $map[$project].Split(";", [System.StringSplitOptions]::RemoveEmptyEntries)
         }
     }
