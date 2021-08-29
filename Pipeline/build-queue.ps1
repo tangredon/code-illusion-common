@@ -77,7 +77,7 @@ Write-Host ""
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
 $changedProjects = New-Object Collections.Generic.HashSet[string]
-$changedDeps = New-Object Collections.Generic.HashSet[string]
+$map = @{};
 
 $editedFiles | ForEach-Object {	
 
@@ -102,10 +102,14 @@ $editedFiles | ForEach-Object {
                     if ($group.Success -eq 1 -and $group.Value -notcontains $project)
                     {
                         $dependency = $group.Value;
-                        $a = $changedDeps.Add($dependency);
+
+                        $old = $map[$project];
+                        $map[$project] = "$old;$dependency"
                     }
                 }
             }
+
+            $map[$project] = $map[$project].Split(";", [System.StringSplitOptions]::RemoveEmptyEntries)
         }
     }
 }
@@ -115,18 +119,12 @@ foreach($proj in $changedProjects)
 {
     AppendQueueVariable $proj
     Write-Host "    -> $proj"
-    $deps = $dependencyMap[$proj];
+    $deps = $map[$proj];
     foreach($dep in $deps)
     {
         AppendQueueVariable $dep
         Write-Host "        + $dep"
     }
-}
-
-foreach($proj in $changedDeps)
-{
-    AppendQueueVariable $proj
-    Write-Host "    ++ $proj"
 }
 
 [int]$ms = $stopwatch.Elapsed.Milliseconds
