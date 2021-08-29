@@ -1,0 +1,94 @@
+variables:
+  projectIdentifier: "Illusion.Common"
+  buildConfiguration: 'Release'
+  vstsFeed: 'cb5e5c0b-aa1d-4688-a3ff-e65476c9e30a/d99cfdbb-c33d-4667-9065-a67e001d5e66'
+
+trigger:
+- development
+- release/mainline
+- release/*
+
+pr:
+- development
+- release/mainline
+
+resources:
+- repo: self
+
+jobs:
+- job: Build_Queue
+  steps:  
+  - task: gitversion/setup@0
+    displayName: Install GitVersion
+    inputs:
+      versionSpec: '5.6.8'
+
+  - task: gitversion/execute@0
+    displayName: Execute GitVersion
+    inputs:
+      updateAssemblyInfo: true
+
+  - task: PowerShell@2
+    name: Variables
+    displayName: Set Job Variables
+    inputs:
+      targetType: 'inline'
+      script: |
+        "Project Identifier: $(projectIdentifier)"
+        'Write-Host "##vso[task.setvariable variable=projectIdentifier;isOutput=true]$(projectIdentifier)'
+        "Version: $(Build.BuildNumber)"
+        'Write-Host "##vso[task.setvariable variable=version;isOutput=true]$(Build.BuildNumber)'
+        'Write-Host "##vso[task.setvariable variable=vsts;isOutput=true]$(vstsFeed)'
+
+  - task: powershell@2
+    name: setBuildQueue
+    displayName: 'Get Service Build Queue'    
+    inputs:
+      targetType: filePath
+      filePath: ./Pipeline/get-service-queue.ps1
+
+- template: build-template.yml
+  parameters:
+    name: Core
+
+- template: build-template.yml
+  parameters:
+    name: Authentication
+
+- template: build-template.yml
+  parameters:
+    name: Consul
+  
+- template: build-template.yml
+  parameters:
+    name: Domain
+
+- template: build-template.yml
+  parameters:
+    name: FeatureFlags
+
+- template: build-template.yml
+  parameters:
+    name: MediatR
+
+- template: build-template.yml
+  parameters:
+    name: RabbitMq
+    
+- template: build-template.yml
+  parameters:
+    name: Telemetry
+
+# - template: build-template.yml
+#   parameters:
+#     name: Service_02
+#     solutionFolder: 'service2'
+#     projectFile: '/service2.api/service2.api.csproj'
+
+# - template: build-template.yml
+#   parameters:
+#     name: Service_03
+#     solutionFolder: 'service3'
+#     projectFile: '/service3.api/service3.api.csproj'
+
+# Add more template jobs with parameters for other Services

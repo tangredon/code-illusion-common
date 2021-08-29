@@ -1,0 +1,66 @@
+
+parameters:
+    name: '--'
+    BuildConfiguration: 'Release'
+    BuildPlatform: 'any cpu'
+
+jobs:
+- job: ${{ parameters.name }}
+  dependsOn: Build_Queue
+  continueOnError: true
+  variables:
+    BuildConfiguration: ${{ parameters.BuildConfiguration }}
+    BuildPlatform: ${{ parameters.BuildPlatform }}
+    project.identifier: $[ dependencies.Build_Queue.outputs['Variables.projectIdentifier'] ]
+    project.name: $(project.identifier).${{ parameters.name }}
+    project.path: $(Build.SourcesDirectory)/$(project.name)
+    myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
+    version: $[ dependencies.Build_Queue.outputs['Variables.version'] ]
+    vstsFeed: $[ dependencies.Build_Queue.outputs['Variables.vsts'] ]
+  condition: and(succeeded(), or(contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.name }}'), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], 'all'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
+  steps:
+  - task: powershell@2
+    displayName: Print Variables
+    inputs:
+      targetType: inline
+      script: |
+        'Write-Host "Build Queue init: $(buildQueueInit) and from parameters $(myBuildQueue)"'
+        "Project Identifier: $(project.name)"
+        'Write-Host "Current path: $(project.path)"'
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: 'build'
+      workingDirectory: $(project.path)
+      arguments: '--configuration $(BuildConfiguration) /p:PackageVersion=$(version)'
+
+  - task: PowerShell@2
+    displayName: Check for Unit Tests
+    inputs:
+      workingDirectory: $(project.path)
+      targetType: inline
+      script: |
+        $testsExist = Test-Path -Path "$(project.name).UnitTests"
+        Write-Output "##vso[task.setvariable variable=TestsExist]$testsExist"
+
+  # GOOD FOR DEBUG, LEAVE IT HERE
+  # - task: printAllVariables@1
+  #   displayName: 'Print all variables'
+
+  - task: DotNetCoreCLI@2
+    condition: eq(variables['TestsExist'], True)
+    displayName: Unit Tests
+    inputs:
+      command: 'test'
+      workingDirectory: $(project.path)/$(project.name).UnitTests
+      publishTestResults: true
+
+  - task: DotNetCoreCLI@2
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    displayName: Push Package
+    inputs:
+      command: 'push'
+      packagesToPush: '$(project.path)/bin/Release/*.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: $(vstsFeed)

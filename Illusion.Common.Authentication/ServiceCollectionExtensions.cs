@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,12 +16,16 @@ namespace Illusion.Common.Authentication
         {
             if (openIdOptions == null) throw new ArgumentNullException(nameof(openIdOptions));
 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Add("scp", "scope");
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Add(ClaimTypes.Name, "name");
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = openIdOptions.Authority;
                     options.Audience = openIdOptions.Audience;
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -31,14 +36,10 @@ namespace Illusion.Common.Authentication
 
                     options.Events = new JwtBearerEvents
                     {
-                        OnMessageReceived = (context) =>
-                        {
-                            return Task.CompletedTask;
-                        },
+                        OnMessageReceived = (context) => Task.CompletedTask,
                         OnTokenValidated = (context) =>
                         {
-                            var identity = context.Principal?.Identity as ClaimsIdentity;
-                            if (identity == null)
+                            if (!(context.Principal?.Identity is ClaimsIdentity identity))
                             {
                                 return Task.CompletedTask;
                             }
@@ -48,6 +49,9 @@ namespace Illusion.Common.Authentication
 
                             var uuid = Base62Convertor.ConvertFrom(uid);
                             identity.AddClaim(new Claim(identity.NameClaimType, uuid.ToString()));
+
+                            var email = identity.Claims.First(c => c.Type == "sub").Value;
+                            identity.AddClaim(new Claim(ClaimTypes.Email, email));
 
                             return Task.CompletedTask;
                         }
