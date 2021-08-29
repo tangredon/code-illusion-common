@@ -64,3 +64,6 @@ $editedFiles | ForEach-Object {
 
 [int]$ms = $stopwatch.Elapsed.Milliseconds
 Write-Output "Duration: $ms ms"
+
+Write-Host "Build Queue: $global:buildQueueVariable"
+Write-Host "##vso[task.setvariable variable=buildQueue;isOutput=true]$global:buildQueueVariable"

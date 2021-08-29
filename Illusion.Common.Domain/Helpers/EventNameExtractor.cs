@@ -6,7 +6,7 @@ namespace Illusion.Common.Domain.Helpers
     {
         public static string GetEventName(Type type)
         {
-            // todo: shouldn't this check if it implements IEvent?
+            // todo: shouldn't the event implement IEvent?
 
             var fullName = type.Name;
 
