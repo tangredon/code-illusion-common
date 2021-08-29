@@ -62,15 +62,15 @@ if ($env:BUILDQUEUEINIT)
 $dependencyMap = BuildDependencyMap
 Write-Host "Dependency Map"
 $dependencyMap.Keys | ForEach-Object { 
-    Write-Host $_ -NoNewline
-    Write-Host " -> " -NoNewline
+    Write-Host "    -> $_" -NoNewline
+    Write-Host " + " -NoNewline
     Write-Host $dependencyMap[$_]
 }
 Write-Host ""
 
 $editedFiles = git diff HEAD HEAD~ --name-only
-Write-Host "-> Changed Files:"
-Write-Host $editedFiles
+Write-Host "Changed Files:"
+$editedFiles | ForEach-Object { Write-Host "    -> $_" }
 Write-Host ""
 Write-Host ""
 
@@ -96,12 +96,12 @@ Write-Host "Changed Projects"
 foreach($proj in $changedProjects)
 {
     AppendQueueVariable $proj
-    Write-Host "    $proj"
+    Write-Host "    -> $proj"
     $deps = $dependencyMap[$proj];
     foreach($dep in $deps)
     {
         AppendQueueVariable $dep
-        Write-Host "        -> $dep"
+        Write-Host "        + $dep"
     }
 }
 
