@@ -45,7 +45,7 @@ jobs:
     displayName: 'Get Service Build Queue'    
     inputs:
       targetType: filePath
-      filePath: ./Pipeline/test.ps1
+      filePath: ./Pipeline/build-queue.ps1
 
 - template: build-template.yml
   parameters:
