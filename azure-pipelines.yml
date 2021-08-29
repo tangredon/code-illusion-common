@@ -47,34 +47,34 @@ jobs:
       targetType: filePath
       filePath: ./Pipeline/build-queue.ps1
 
-- template: build-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: Core
 
-- template: build-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: Authentication
 
-- template: build-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: Consul
   
-- template: build-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: Domain
 
-- template: build-template.yml
+- template: ./Pipeline/build-template.yml
   parameters:
     name: FeatureFlags
 
-- template: build-template.yml
+- template: ./Pipelinebuild-template.yml
   parameters:
     name: MediatR
 
-- template: build-template.yml
+- template: ./Pipelinebuild-template.yml
   parameters:
     name: RabbitMq
     
-- template: build-template.yml
+- template: ./Pipelinebuild-template.yml
   parameters:
     name: Telemetry
