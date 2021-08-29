@@ -8,12 +8,17 @@ Function BuildDependencyMap()
 {
     $dependencyMap = @{}
 
-    $folders = Get-ChildItem -Path . -Directory | Where-Object { $_.Name.StartsWith($global:projectIdentifier) }
+    $folders = Get-ChildItem -Path . -Directory -Name | Where-Object { $_.StartsWith($global:projectIdentifier) }
     foreach ($folder in $folders)
     {
-        $project = $folder.Name.Replace("$global:projectIdentifier.", "")
-    
+        Write-Host $folder
+        $project = $folder.Replace("$global:projectIdentifier.", "")
+        Write-Host $project
+
         $csproj = "$folder/$folder.csproj"
+        
+        Write-Host $csproj
+
         $output = & dotnet list "$csproj" reference
     
         ForEach ($line in $($output -split "`r`n"))
