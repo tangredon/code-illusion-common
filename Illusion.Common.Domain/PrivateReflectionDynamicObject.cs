@@ -11,7 +11,7 @@ namespace Illusion.Common.Domain
     /// <summary>
     /// Taken from http://blogs.msdn.com/b/davidebb/archive/2010/01/18/use-c-4-0-dynamic-to-drastically-simplify-your-private-reflection-code.aspx
     /// </summary>
-    internal class PrivateReflectionDynamicObject : DynamicObject 
+    internal class PrivateReflectionDynamicObject : DynamicObject
     {
         private static readonly IDictionary<Type, IDictionary<string, IProperty>> PropertiesOnType =
             new ConcurrentDictionary<Type, IDictionary<string, IProperty>>();
