@@ -54,6 +54,6 @@ branches:
 ignore:
   sha: []
 merge-message-formats:
-  github: '^Merge pull request #(?<PullRequestNumber>\d+) from (\w+)/(?<SourceBranch>.+)'
+  github: '^Merge pull request #(?<PullRequestNumber>\d+) from (?:\w+\/)(?<SourceBranch>.+)'
   # github: '^Merge pull request #(?<PullRequestNumber>\d+) from (?<SourceBranch>.+)$'
   # tfs: '^Merged (?:PR (?<PullRequestNumber>\d+)): (M|m)erge (?<SourceBranch>.+) (in)?to (?<TargetBranch>.+)'
