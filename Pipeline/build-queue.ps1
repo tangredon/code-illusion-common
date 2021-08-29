@@ -11,16 +11,10 @@ Function BuildDependencyMap()
     $folders = Get-ChildItem -Path . -Directory -Name | Where-Object { $_.StartsWith($global:projectIdentifier) }
     foreach ($folder in $folders)
     {
-        Write-Host $folder
         $project = $folder.Replace("$global:projectIdentifier.", "")
-        Write-Host $project
-
         $csproj = "$folder/$folder.csproj"
         
-        Write-Host $csproj
-
         $output = & dotnet list "$csproj" reference
-    
         ForEach ($line in $($output -split "`r`n"))
         {
             $result = [regex]::Match($line, "$global:projectIdentifier.(\w*).csproj")
@@ -66,6 +60,12 @@ if ($env:BUILDQUEUEINIT)
 }
 
 $dependencyMap = BuildDependencyMap
+Write-Host "Dependency Map"
+$dependencyMap.Keys | ForEach-Object { 
+    Write-Host $_ -NoNewline
+    Write-Host " -> " -NoNewline
+    Write-Host $dependencyMap[$_]
+}
 
 $editedFiles = git diff HEAD HEAD~ --name-only
 Write-Host "-> Changed Files:"
