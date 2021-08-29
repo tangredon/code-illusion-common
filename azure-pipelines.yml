@@ -78,17 +78,3 @@ jobs:
 - template: build-template.yml
   parameters:
     name: Telemetry
-
-# - template: build-template.yml
-#   parameters:
-#     name: Service_02
-#     solutionFolder: 'service2'
-#     projectFile: '/service2.api/service2.api.csproj'
-
-# - template: build-template.yml
-#   parameters:
-#     name: Service_03
-#     solutionFolder: 'service3'
-#     projectFile: '/service3.api/service3.api.csproj'
-
-# Add more template jobs with parameters for other Services
