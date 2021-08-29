@@ -34,8 +34,6 @@ $editedFiles | ForEach-Object {
                     }
                 }
             }
-
-            # Write-Output $output
         }
     }
 }
