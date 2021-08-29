@@ -6,7 +6,7 @@ namespace Illusion.Common.FeatureFlags
     {
         public DevelopmentFeatureFlagProvider(ILogger<DevelopmentFeatureFlagProvider> logger)
         {
-            logger.LogDebug("[DEV] Feature Flag Provider set to Dev Implementation. All features set to FALSE.");
+            logger.LogDebug("Feature Flag Provider set to Dev Implementation. All features set to FALSE.");
         }
 
         public bool GetFeatureFlag(string feature) => false;

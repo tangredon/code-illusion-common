@@ -77,6 +77,7 @@ Write-Host ""
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
 $changedProjects = New-Object Collections.Generic.HashSet[string]
+$changedDeps = New-Object Collections.Generic.HashSet[string]
 
 $editedFiles | ForEach-Object {	
 
@@ -88,6 +89,23 @@ $editedFiles | ForEach-Object {
         if ($isFolder -eq 1) {
             $project = $folder.Replace("$global:projectIdentifier.", "")
             $a = $changedProjects.Add($project)
+
+            $csproj = "$folder/$folder.csproj"
+            $output = & dotnet list "$csproj" reference
+
+            ForEach ($line in $($output -split "`r`n"))
+            {
+                $result = [regex]::Match($line, "$global:projectIdentifier.(\w*).csproj")
+                if ($result.Success -eq 1)
+                {
+                    $group = $result.Groups[1];
+                    if ($group.Success -eq 1 -and $group.Value -notcontains $project)
+                    {
+                        $dependency = $group.Value;
+                        $a = $changedDeps.Add($dependency);
+                    }
+                }
+            }
         }
     }
 }
@@ -103,6 +121,12 @@ foreach($proj in $changedProjects)
         AppendQueueVariable $dep
         Write-Host "        + $dep"
     }
+}
+
+foreach($proj in $changedDeps)
+{
+    AppendQueueVariable $proj
+    Write-Host "    ++ $proj"
 }
 
 [int]$ms = $stopwatch.Elapsed.Milliseconds
