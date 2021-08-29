@@ -1,8 +1,7 @@
 using System;
-using Illusion.Common.Core;
 using Xunit;
 
-namespace Illusion.Common.UnitTests
+namespace Illusion.Common.Core.UnitTests
 {
     public class Base62ConvertorUnitTests
     {
