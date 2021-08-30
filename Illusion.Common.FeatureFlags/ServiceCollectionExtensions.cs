@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -6,38 +7,36 @@ using Splitio.Services.Client.Classes;
 
 namespace Illusion.Common.FeatureFlags
 {
-    public class FeatureFlagsOptions
-    {
-        public static string SectionName = "FeatureFlags";
-
-        public string ApiKey { get; set; }
-    }
-
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddFeatureFlags(this IServiceCollection services, IConfiguration configuration)
         {
             var options = configuration.GetSection(FeatureFlagsOptions.SectionName).Get<FeatureFlagsOptions>();
 
-            if (options != null)
+            services.AddSingleton<IFeatureFlagProvider>(sp =>
             {
-                var config = new ConfigurationOptions
+                try
                 {
-                    StreamingEnabled = true
-                };
+                    if (options != null)
+                    {
+                        var config = new ConfigurationOptions
+                        {
+                            StreamingEnabled = true
+                        };
 
-                var factory = new SplitFactory(options.ApiKey, config);
-                var sdk = factory.Client();
+                        var factory = new SplitFactory(options.ApiKey, config);
+                        var sdk = factory.Client();
 
-                services.AddSingleton<IFeatureFlagProvider, FeatureFlagProvider>(sp =>
+                        return new FeatureFlagProvider(sp.GetRequiredService<IHttpContextAccessor>(), sdk, sp.GetRequiredService<ILogger<FeatureFlagProvider>>());
+                    }
+                }
+                catch (Exception e)
                 {
-                    return new FeatureFlagProvider(sp.GetRequiredService<IHttpContextAccessor>(), sdk, sp.GetRequiredService<ILogger<FeatureFlagProvider>>());
-                });
-            }
-            else
-            {
-                services.AddSingleton<IFeatureFlagProvider, DevelopmentFeatureFlagProvider>();
-            }
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<FeatureFlagProvider>().LogError("Invalid configuration; fallback to dev implementation", e);
+                }
+
+                return new DevelopmentFeatureFlagProvider(sp.GetRequiredService<ILogger<DevelopmentFeatureFlagProvider>>());
+            });
 
             return services;
         }
