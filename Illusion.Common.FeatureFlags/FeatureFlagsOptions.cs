@@ -6,5 +6,6 @@
 
         public string ApiKey { get; set; }
         public string LocalFilePath { get; set; } = "flags.yaml";
+        public bool Debug { get; set; } = false;
     }
 }

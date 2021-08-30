@@ -15,6 +15,8 @@ namespace Illusion.Common.FeatureFlags
 
             services.AddSingleton<IFeatureFlagProvider>(sp =>
             {
+                
+
                 try
                 {
                     if (options != null)
@@ -25,15 +27,25 @@ namespace Illusion.Common.FeatureFlags
                             LocalhostFilePath = options.LocalFilePath
                         };
 
+                        if (options.Debug)
+                        {
+                            sp.GetRequiredService<ILoggerFactory>()
+                                .AddSplitLogs();
+                        }
+
                         var factory = new SplitFactory(options.ApiKey, config);
                         var sdk = factory.Client();
+
+                        
 
                         return new FeatureFlagProvider(sp.GetRequiredService<IHttpContextAccessor>(), sdk, sp.GetRequiredService<ILogger<FeatureFlagProvider>>());
                     }
                 }
                 catch (Exception e)
                 {
-                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<FeatureFlagProvider>().LogError(e, "Invalid configuration; fallback to dev implementation");
+                    sp.GetRequiredService<ILoggerFactory>()
+                        .CreateLogger<FeatureFlagProvider>()
+                        .LogError(e, "Invalid configuration; fallback to dev implementation");
                 }
 
                 return new DevelopmentFeatureFlagProvider(sp.GetRequiredService<ILogger<DevelopmentFeatureFlagProvider>>());
