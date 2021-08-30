@@ -16,6 +16,7 @@ namespace Illusion.Common.MediatR
         public static IServiceCollection AddMediatRCustom(this IServiceCollection services, Type assembly, bool logging, bool validation)
         {
             services.AddMediatR(assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TelemetryBehavior<,>));
 
             if (logging)
             {

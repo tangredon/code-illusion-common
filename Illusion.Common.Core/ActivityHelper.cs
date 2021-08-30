@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Illusion.Common.Telemetry
+namespace Illusion.Common.Core
 {
     public static class ActivityHelper
     {
@@ -8,6 +8,5 @@ namespace Illusion.Common.Telemetry
 
         public static Activity Current => Activity.Current ?? NullActivity;
         public static ActivitySource Source => Current.Source;
-
     }
 }

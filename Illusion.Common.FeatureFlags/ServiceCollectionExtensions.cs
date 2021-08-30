@@ -15,15 +15,13 @@ namespace Illusion.Common.FeatureFlags
 
             services.AddSingleton<IFeatureFlagProvider>(sp =>
             {
-                
-
                 try
                 {
                     if (options != null)
                     {
                         var config = new ConfigurationOptions
                         {
-                            StreamingEnabled = true,
+                            StreamingEnabled = false,
                             LocalhostFilePath = options.LocalFilePath
                         };
 
@@ -35,8 +33,6 @@ namespace Illusion.Common.FeatureFlags
 
                         var factory = new SplitFactory(options.ApiKey, config);
                         var sdk = factory.Client();
-
-                        
 
                         return new FeatureFlagProvider(sp.GetRequiredService<IHttpContextAccessor>(), sdk, sp.GetRequiredService<ILogger<FeatureFlagProvider>>());
                     }
