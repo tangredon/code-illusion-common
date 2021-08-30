@@ -55,6 +55,7 @@ jobs:
       command: 'test'
       workingDirectory: $(project.path)/$(project.name).UnitTests
       testRunTitle: ${{ parameters.name }}
+      arguments: '/p:GeneratePackageOnBuild=false'
       publishTestResults: true
 
   - task: DotNetCoreCLI@2

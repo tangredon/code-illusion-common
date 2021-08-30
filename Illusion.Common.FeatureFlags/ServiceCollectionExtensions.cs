@@ -32,7 +32,7 @@ namespace Illusion.Common.FeatureFlags
                 }
                 catch (Exception e)
                 {
-                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<FeatureFlagProvider>().LogError("Invalid configuration; fallback to dev implementation", e);
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<FeatureFlagProvider>().LogError(e, "Invalid configuration; fallback to dev implementation");
                 }
 
                 return new DevelopmentFeatureFlagProvider(sp.GetRequiredService<ILogger<DevelopmentFeatureFlagProvider>>());
