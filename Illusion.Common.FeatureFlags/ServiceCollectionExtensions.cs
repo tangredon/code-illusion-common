@@ -21,7 +21,8 @@ namespace Illusion.Common.FeatureFlags
                     {
                         var config = new ConfigurationOptions
                         {
-                            StreamingEnabled = true
+                            StreamingEnabled = true,
+                            LocalhostFilePath = options.LocalFilePath
                         };
 
                         var factory = new SplitFactory(options.ApiKey, config);
