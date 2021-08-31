@@ -79,11 +79,10 @@ $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $changedProjects = New-Object Collections.Generic.HashSet[string]
 $map = @{};
 
-$editedFiles = git diff HEAD HEAD~ --name-only
-$editedFiles | ForEach-Object {	
-
-    if ($_.StartsWith($global:projectIdentifier)) {
-        $parts = $_.Split("/")
+foreach($editedFile in $editedFiles)
+{
+    if (editedFile.StartsWith($global:projectIdentifier)) {
+        $parts = editedFile.Split("/")
         $folder = $parts[0]
         $isFolder = Test-Path $folder -PathType Container
 
