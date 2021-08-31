@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Illusion.Common.Consul
+namespace Illusion.Common.Consul.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {

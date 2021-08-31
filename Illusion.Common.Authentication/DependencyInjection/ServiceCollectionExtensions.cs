@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Illusion.Common.Authentication
+namespace Illusion.Common.Authentication.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {

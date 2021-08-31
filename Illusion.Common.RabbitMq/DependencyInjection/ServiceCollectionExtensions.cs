@@ -16,7 +16,7 @@ using RawRabbit.Pipe;
 using RawRabbit.Serialization;
 using JsonSerializer = RawRabbit.Serialization.JsonSerializer;
 
-namespace Illusion.Common.RabbitMq
+namespace Illusion.Common.RabbitMq.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -28,7 +28,7 @@ namespace Illusion.Common.RabbitMq
                 Plugins = p => p
                     .UseGlobalExecutionId()
                     .UseHttpContext()
-                    .UseMessageContext(c => new MessageContext
+                    .UseMessageContext(c => new IllusionMessageContext
                     {
                         GlobalRequestId = Guid.Parse(c.GetGlobalExecutionId()),
                         Source = c.GetHttpContext().Request.GetDisplayUrl(),

@@ -4,7 +4,7 @@ using RawRabbit.Enrichers.MessageContext.Context;
 
 namespace Illusion.Common.RabbitMq
 {
-    public class MessageContext : IMessageContext
+    public class IllusionMessageContext : IMessageContext
     {
         public Guid GlobalRequestId { get; set; }
         public string Source { get; set; }
