@@ -40,12 +40,21 @@ jobs:
         'Write-Host "##vso[task.setvariable variable=version;isOutput=true]$(Build.BuildNumber)'
         'Write-Host "##vso[task.setvariable variable=vsts;isOutput=true]$(vstsFeed)'
 
-  - task: powershell@2
+  - task: AzurePowerShell@5
     name: setBuildQueue
     displayName: 'Get Service Build Queue'    
     inputs:
-      targetType: filePath
-      filePath: ./Pipeline/build-queue.ps1
+      azureSubscription: 'Azure subscription 1(4625e454-b8ff-49a5-8ac3-a623c0c10eb8)'
+      ScriptType: 'FilePath'
+      ScriptPath: './Pipeline/build-queue.ps1'
+      azurePowerShellVersion: 'LatestVersion'
+
+  # - task: powershell@2
+  #   name: setBuildQueue
+  #   displayName: 'Get Service Build Queue'    
+  #   inputs:
+  #     targetType: filePath
+  #     filePath: ./Pipeline/build-queue.ps1
 
 - template: Pipeline/build-template.yml
   parameters:
