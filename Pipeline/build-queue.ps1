@@ -81,8 +81,8 @@ $map = @{};
 
 foreach($editedFile in $editedFiles)
 {
-    if (editedFile.StartsWith($global:projectIdentifier)) {
-        $parts = editedFile.Split("/")
+    if ($editedFile.StartsWith($global:projectIdentifier)) {
+        $parts = $editedFile.Split("/")
         $folder = $parts[0]
         $isFolder = Test-Path $folder -PathType Container
 
