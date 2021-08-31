@@ -16,7 +16,7 @@ using RawRabbit.Pipe;
 using RawRabbit.Serialization;
 using JsonSerializer = RawRabbit.Serialization.JsonSerializer;
 
-namespace Illusion.Common.RabbitMq.DependencyInjection
+namespace Illusion.Common.RabbitMq
 {
     public static class ServiceCollectionExtensions
     {

@@ -72,7 +72,6 @@ $editedFiles = git diff HEAD HEAD~ --name-only
 Write-Host "Changed Files:"
 $editedFiles | ForEach-Object { Write-Host "    -> $_" }
 Write-Host ""
-Write-Host ""
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 

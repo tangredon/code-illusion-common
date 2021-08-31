@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Splitio.Services.Client.Classes;
 
-namespace Illusion.Common.FeatureFlags.DependencyInjection
+namespace Illusion.Common.FeatureFlags
 {
     public static class ServiceCollectionExtensions
     {

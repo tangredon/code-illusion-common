@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace Illusion.Common.Telemetry.DependencyInjection
+namespace Illusion.Common.Telemetry
 {
     public static class ServiceCollectionExtensions
     {

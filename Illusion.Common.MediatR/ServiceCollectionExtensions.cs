@@ -4,7 +4,7 @@ using Illusion.Common.MediatR.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Illusion.Common.MediatR.DependencyInjection
+namespace Illusion.Common.MediatR
 {
     public static class ServiceCollectionExtensions
     {
