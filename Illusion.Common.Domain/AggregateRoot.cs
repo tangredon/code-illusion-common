@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Illusion.Common.Domain.Dynamic;
 using Illusion.Common.Domain.Events;
 
 namespace Illusion.Common.Domain

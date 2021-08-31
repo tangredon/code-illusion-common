@@ -1,4 +1,4 @@
-﻿namespace Illusion.Common.Domain
+﻿namespace Illusion.Common.Domain.Dynamic
 {
     /// <summary>
     /// Taken from https://github.com/gregoryyoung/m-r
