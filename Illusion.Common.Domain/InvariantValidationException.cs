@@ -2,7 +2,7 @@
 
 namespace Illusion.Common.Domain
 {
-    // todo: 4
+    // todo: 5
     public class InvariantValidationException : Exception
     {
         public InvariantValidationException(string message) : base(message) {}
