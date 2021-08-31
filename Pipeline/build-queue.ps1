@@ -88,6 +88,7 @@ foreach($editedFile in $editedFiles)
 
         if ($isFolder -eq 1) {
             $project = $folder.Replace("$global:projectIdentifier.", "")
+            Write-Host "Project: $project"
             $a = $changedProjects.Add($project)
 
             $csproj = "$folder/$folder.csproj"
@@ -109,6 +110,7 @@ foreach($editedFile in $editedFiles)
                 }
             }
 
+            Write-Host $map
             # todo: move this out of the changedFile loop
             $map[$project] = $map[$project].Split(";", [System.StringSplitOptions]::RemoveEmptyEntries)
         }
