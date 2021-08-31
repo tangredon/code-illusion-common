@@ -21,7 +21,7 @@ jobs:
   - task: gitversion/setup@0
     displayName: Install GitVersion
     inputs:
-      versionSpec: '5.6.8'
+      versionSpec: '5.7.0'
 
   - task: gitversion/execute@0
     displayName: Execute GitVersion
