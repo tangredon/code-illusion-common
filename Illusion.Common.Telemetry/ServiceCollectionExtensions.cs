@@ -10,7 +10,7 @@ namespace Illusion.Common.Telemetry
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddTelemetry(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddTelemetry(this IServiceCollection services, IConfiguration configuration, string[] sources = null)
         {
             var serviceOptions = configuration.GetSection(ServiceOptions.SectionName).Get<ServiceOptions>();
             var telemetryOptions = configuration.GetSection(TelemetryOptions.SectionName).Get<TelemetryOptions>();
@@ -29,6 +29,12 @@ namespace Illusion.Common.Telemetry
                         }
                     };
                 });
+
+                if (sources != null)
+                {
+                    builder.AddSource(sources);
+                }
+
                 builder.AddHttpClientInstrumentation(options =>
                 {
                     options.Enrich = (activity, eventName, rawObject) => { };
