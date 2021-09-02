@@ -12,7 +12,8 @@ namespace Illusion.Common.RabbitMq
         public Guid OwnerId { get; set; }
         public RetryInformation RetryInfo { get; set; }
         public string RoutingKey { get; set; }
-        public string SpanContext { get; set; }
+        public string TraceId { get; set; }
+        public string SpanId { get; set; }
     }
 
     public class ConsumerIllusionMessageContext : IllusionMessageContext

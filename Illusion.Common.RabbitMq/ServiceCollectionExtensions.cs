@@ -34,7 +34,7 @@ namespace Illusion.Common.RabbitMq
                         Source = c.GetHttpContext().Request.GetDisplayUrl(),
                         OwnerId = c.GetHttpContext().User.GetGuid(),
                         RoutingKey = c.GetBasicPublishConfiguration().RoutingKey,
-                        SpanContext = GlobalTracer.Instance.ActiveSpan.Context.ToString()
+                        SpanId = GlobalTracer.Instance.ActiveSpan.Context.ToString()
                     })
                     .UseContextForwarding()
                     .UseRetryLater()
