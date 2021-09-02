@@ -33,7 +33,6 @@ namespace Illusion.Common.RabbitMq
                         GlobalRequestId = Guid.Parse(c.GetGlobalExecutionId()),
                         Source = c.GetHttpContext().Request.GetDisplayUrl(),
                         OwnerId = c.GetHttpContext().User.GetGuid(),
-                        TypeInfo = new MessageTypeInformation(c.GetMessageType()),
                         RoutingKey = c.GetBasicPublishConfiguration().RoutingKey,
                         SpanContext = GlobalTracer.Instance.ActiveSpan.Context.ToString()
                     })
