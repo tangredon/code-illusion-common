@@ -19,6 +19,7 @@ namespace Illusion.Common.Domain.Helpers
 
         public static string SerializeToString<T>(T @event) => JsonSerializer.Serialize((object)@event, Options);
         public static byte[] SerializeToBytes<T>(T @event) => JsonSerializer.SerializeToUtf8Bytes((object)@event, Options);
+        public static T Deserialize<T>(in ReadOnlySpan<byte> data) => JsonSerializer.Deserialize<T>(data, Options);
         public static T Deserialize<T>(Type eventClrType, in ReadOnlySpan<byte> data) => (T)JsonSerializer.Deserialize(data, eventClrType, Options);
         public static T Deserialize<T>(Type eventClrType, string data) => (T)JsonSerializer.Deserialize(data, eventClrType, Options);
     }
