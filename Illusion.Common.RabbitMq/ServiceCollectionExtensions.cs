@@ -9,10 +9,8 @@ using RawRabbit;
 using RawRabbit.Configuration;
 using RawRabbit.DependencyInjection.ServiceCollection;
 using RawRabbit.Enrichers.GlobalExecutionId;
-using RawRabbit.Enrichers.HttpContext;
 using RawRabbit.Enrichers.MessageContext;
 using RawRabbit.Instantiation;
-using RawRabbit.Pipe;
 using RawRabbit.Serialization;
 using JsonSerializer = RawRabbit.Serialization.JsonSerializer;
 
@@ -31,9 +29,6 @@ namespace Illusion.Common.RabbitMq
                     .UseMessageContext(c => new IllusionMessageContext
                     {
                         GlobalRequestId = Guid.Parse(c.GetGlobalExecutionId()),
-                        Source = c.GetHttpContext().Request.GetDisplayUrl(),
-                        OwnerId = c.GetHttpContext().User.GetGuid(),
-                        RoutingKey = c.GetBasicPublishConfiguration().RoutingKey,
                         SpanId = GlobalTracer.Instance.ActiveSpan.Context.ToString()
                     })
                     .UseContextForwarding()
