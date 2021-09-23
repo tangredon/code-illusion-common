@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,41 @@ namespace Illusion.Common.Consul
 {
     public static class ServiceCollectionExtensions
     {
+        public static IHttpClientBuilder AddHttpClientWithConsulDiscovery(this IServiceCollection services, string serviceName, PathString basePath)
+        {
+            return services
+                .AddHttpClient(serviceName, (serviceProvider, client) =>
+                {
+                    var context = serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+
+                    if (context.Request.Headers.ContainsKey("Authorization"))
+                    {
+                        client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(context.Request.Headers["Authorization"].ToString());
+                    }
+
+                    var consul = serviceProvider.GetRequiredService<IConsulClient>();
+
+                    // todo: this is a terrible approach; create a hosted service for this
+                    var result = consul.Agent.Services().Result.Response;
+
+                    var agentServices = result
+                        .Where((pair => pair.Value.Service == serviceName))
+                        .Select(pair => pair.Value)
+                        .ToList();
+
+                    if (agentServices.Count == 0)
+                    {
+                        // todo: non retryable
+                        throw new Exception($"Service {serviceName} could not be found using service discovery.");
+                    }
+
+                    var graphQLService = agentServices.First();
+                    // todo: maybe add a parameter for the protocol (http or https)
+                    client.BaseAddress = new Uri($"http://{graphQLService.Address}:{graphQLService.Port}{basePath}");
+                    //client.Timeout = TimeSpan.FromSeconds(5);
+                });
+        }
+
         public static IServiceCollection AddConsul(this IServiceCollection services)
         {
             using var serviceProvider = services.BuildServiceProvider();
