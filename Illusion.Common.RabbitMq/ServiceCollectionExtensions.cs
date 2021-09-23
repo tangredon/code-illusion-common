@@ -1,10 +1,8 @@
 ﻿using System;
 using Illusion.Common.Core;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using OpenTracing.Util;
 using RawRabbit;
 using RawRabbit.Configuration;
 using RawRabbit.DependencyInjection.ServiceCollection;
@@ -29,7 +27,8 @@ namespace Illusion.Common.RabbitMq
                     .UseMessageContext(c => new IllusionMessageContext
                     {
                         GlobalRequestId = Guid.Parse(c.GetGlobalExecutionId()),
-                        SpanId = GlobalTracer.Instance.ActiveSpan.Context.ToString()
+                        TraceId = ActivityHelper.Current?.TraceId.ToString(),
+                        SpanId = ActivityHelper.Current?.ParentSpanId.ToString(),
                     })
                     .UseContextForwarding()
                     .UseRetryLater()

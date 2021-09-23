@@ -1,10 +1,10 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusion.Common.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,9 +12,9 @@ namespace Illusion.Common.Authentication
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddOpenIdConnectionAuthentication(this IServiceCollection services, OpenIdConnectOptions openIdOptions)
+        public static IServiceCollection AddOpenIdConnectionAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            if (openIdOptions == null) throw new ArgumentNullException(nameof(openIdOptions));
+            var openIdOptions = configuration.GetSection(OpenIdConnectOptions.SectionName).Get<OpenIdConnectOptions>();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Add("scp", "scope");
@@ -39,7 +39,7 @@ namespace Illusion.Common.Authentication
                         OnMessageReceived = (context) => Task.CompletedTask,
                         OnTokenValidated = (context) =>
                         {
-                            if (!(context.Principal?.Identity is ClaimsIdentity identity))
+                            if (!(context.Principal is {Identity: ClaimsIdentity identity}))
                             {
                                 return Task.CompletedTask;
                             }
