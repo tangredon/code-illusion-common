@@ -68,11 +68,18 @@ namespace Illusion.Common.Telemetry
 
                 if (telemetryOptions.NewRelic.Enabled)
                 {
-                    builder.AddNewRelicExporter(options =>
+                    builder.AddOtlpExporter(options =>
                     {
                         options.Endpoint = new Uri(telemetryOptions.NewRelic.Endpoint);
-                        options.ApiKey = telemetryOptions.NewRelic.ApiKey;
+                        options.Headers = $"api-key: {telemetryOptions.NewRelic.ApiKey}";
                     });
+
+                    // Deprecated
+                    //builder.AddNewRelicExporter(options =>
+                    //{
+                    //    options.Endpoint = new Uri(telemetryOptions.NewRelic.Endpoint);
+                    //    options.ApiKey = telemetryOptions.NewRelic.ApiKey;
+                    //});
                 }
             });
 
