@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Illusion.Common.MediatR.Behaviors
 {
-    internal class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    internal class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly ILogger _logger;
         public LoggingBehavior(ILogger<TRequest> logger)

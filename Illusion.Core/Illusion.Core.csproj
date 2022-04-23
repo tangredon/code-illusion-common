@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Illusion</Authors>
+    <Company>Illusion</Company>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\Assets\logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Illusion.Common.Authentication\Illusion.Common.Authentication.csproj" />
+    <ProjectReference Include="..\Illusion.Common.Consul\Illusion.Common.Consul.csproj" />
+    <ProjectReference Include="..\Illusion.Common.Core\Illusion.Common.Core.csproj" />
+    <ProjectReference Include="..\Illusion.Common.Core\Illusion.Common.Core.UnitTests\Illusion.Common.Core.UnitTests.csproj" />
+    <ProjectReference Include="..\Illusion.Common.Domain\Illusion.Common.Domain.csproj" />
+    <ProjectReference Include="..\Illusion.Common.Domain\Illusion.Common.Domain.UnitTests\Illusion.Common.Domain.UnitTests.csproj" />
+    <ProjectReference Include="..\Illusion.Common.FeatureFlags\Illusion.Common.FeatureFlags.csproj" />
+    <ProjectReference Include="..\Illusion.Common.MediatR\Illusion.Common.MediatR.csproj" />
+    <ProjectReference Include="..\Illusion.Common.RabbitMq\Illusion.Common.RabbitMq.csproj" />
+    <ProjectReference Include="..\Illusion.Common.Telemetry\Illusion.Common.Telemetry.csproj" />
+  </ItemGroup>
+
+</Project>
